@@ -11,13 +11,17 @@ class Database {
         $this->conn = null;
         
         try {
+            // Criação da conexão com o banco de dados
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $exception) {
-            echo "Erro de conexão: " . $exception->getMessage();
+            // Logando o erro em vez de exibir
+            error_log("Erro de conexão: " . $exception->getMessage());
+            echo "Erro ao conectar ao banco de dados. Por favor, tente novamente mais tarde.";
         }
         
         return $this->conn;
     }
 }
+
 ?>

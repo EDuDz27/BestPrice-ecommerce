@@ -1,15 +1,28 @@
 <?php
 
-require_once 'config\database.php';
-require_once 'app\controllers\CadastroController.php';
+require __DIR__ . '/app/controllers/HomeController.php';
+require __DIR__ . '/app/controllers/CadastroController.php';
+require __DIR__ . '/app/controllers/AuthController.php';
+require __DIR__ . '/app/controllers/PerfilController.php';
+require __DIR__ . '/app/controllers/SobreController.php';
+require __DIR__ . '/app/controllers/EnderecoController.php';
 
-// Inicia o controlador
-$userController = new UserController();
+require __DIR__ . '/router.php';
 
-// Verifica se é uma requisição POST ou GET
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userController->handleForm(); // Processa o formulário
-} else {
-    $userController->showForm(); // Exibe o formulário
-}
+$router = new Router();
+
+$router->add('home',                'HomeController',       'index');
+$router->add('sobre',               'SobreController',      'index');
+$router->add('cadastro@verifica',   'CadastroController',   'verificaSessao');
+$router->add('cadastro',            'CadastroController',   'salvar');
+$router->add('login@verifica',      'AuthController',       'verificaSessao');
+$router->add('login',               'AuthController',       'login');
+$router->add('logout',              'AuthController',       'logout');
+$router->add('perfil',              'PerfilController',     'index');
+$router->add('endereco',            'EnderecoController',   'showForm');
+$router->add('endereco@cep',        'EnderecoController',   'buscarCep');
+$router->add('endereco@salvar',     'EnderecoController',   'salvar');
+
+$router->run();
+
 ?>

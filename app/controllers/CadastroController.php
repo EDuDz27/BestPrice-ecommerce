@@ -1,51 +1,91 @@
 <?php
 
-require_once 'app\models\CadastroModel.php';
+require_once 'config/database.php';
+require_once 'app/models/CadastroModel.php';
 
-class UserController {
+class CadastroController
+{
+    private $cadastroModel;
 
-    private $db;
-    private $user;
-    private $confirm_senha;
-
-    public function __construct() {
-        $this->db = (new Database())->getConnection();
-        $this->user = new User($this->db);
+    public function __construct()
+    {
+        $this->cadastroModel = new CadastroModel();
     }
 
-    public function showForm() {
-        // Exibe o formulário de cadastro
-        include 'app/views/Cadastro_form.html'; 
+    public function verificaSessao() {
+        session_start();
+        if (!isset($_SESSION['user_email'])) {
+            session_abort();
+            $this->showForm();
+        } else {
+            header("Location: perfil");
+            exit();
+        }
     }
 
-    public function handleForm() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    public function showForm()
+    {
+        session_start();
+        if (!isset($_SESSION['user_email'])) {
+            include 'app/views/cadastro_form.php';
+        }
+    }
+
+
+    public function salvar()
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Recebe os dados do formulário
-            $this->user->nome = $_POST['nome'];
-            $this->user->email = $_POST['email'];
-            $this->user->senha = $_POST['senha'];
+            $this->cadastroModel->nome = trim($_POST['nome']);
+            $this->cadastroModel->email = trim($_POST['email']);
+            $this->cadastroModel->senha = $_POST['senha'];
             $confirm_senha = $_POST['confirm_senha'];
-            if ($this->user->senha !== $confirm_senha) {
-                echo "As senhas não coincidem!";  // Se as senhas forem diferentes
-                die;
-            } else {
-            $this->user->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Criptografa a senha
-            $this->user->telefone = $_POST['telefone'];
+            $this->cadastroModel->telefone = trim($_POST['telefone']);
+
+            // 💡 Validação no Backend 💡
+            if (empty($this->cadastroModel->nome) || empty($this->cadastroModel->email) || empty($this->cadastroModel->senha) || empty($confirm_senha)) {
+                $error = "Todos os campos são obrigatórios!";
+                include 'app/views/cadastro_form.php';
+                exit;
             }
 
-            // Verifica se o email já existe
-            if ($this->user->checkEmailExistente()) {
-                echo "Este email já está cadastrado!";
-                die;
-            } else {
-                // Tenta cadastrar o usuário
-                if ($this->user->cadastrar()) {
-                    echo "Cadastro realizado com sucesso!";
-                } else {
-                    echo "Erro ao cadastrar o usuário!";
-                    die;
-                }
+            // Verifica se o e-mail já existe
+            if ($this->cadastroModel->checkEmailExistente()) {
+                $error = "O e-mail já está cadastrado!";
+                include 'app/views/cadastro_form.php';
+                exit;
             }
+
+            if ($this->cadastroModel->senha !== $confirm_senha) {
+                $error = "As senhas não coincidem!";
+                include 'app/views/cadastro_form.php';
+                exit;
+            }
+
+            if (strlen($this->cadastroModel->senha) < 8) {
+                $error = "A senha deve ter pelo menos 8 caracteres!";
+                include 'app/views/cadastro_form.php';
+                exit;
+            }
+
+            if (!preg_match('/[A-Z]/', $this->cadastroModel->senha) || !preg_match('/[0-9]/', $this->cadastroModel->senha)) {
+                $error = "A senha deve conter pelo menos uma letra maiúscula e um número!";
+                include 'app/views/cadastro_form.php';
+                exit;
+            }
+
+            // Criptografa a senha antes de salvar
+            $this->cadastroModel->senha = password_hash($this->cadastroModel->senha, PASSWORD_DEFAULT);
+
+            // Salva o usuário
+            if ($this->cadastroModel->salvar()) {
+                echo "Cadastro realizado com sucesso!";
+            } else {
+                echo "Erro ao cadastrar o usuário!";
+            }
+
+        } else {
+            $this->verificaSessao();
         }
     }
 }

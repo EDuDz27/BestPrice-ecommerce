@@ -9,48 +9,14 @@ body {
     background-color: #2F5642;
 }
 
-.header {
-    background-color: #0a6f3d;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    font-size: 10px;
-    font-weight:0;
-}
-
-.nav-bar {
-    background: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 50px;
-}
-.search-box input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 18px; /* Borda arredondada */
-    outline: none;
-    background-color: #F5F5F5;
-    background: url("public/img/Vector.svg") no-repeat right 10px center;
-    background-size: 16px;
-}
-.nav-bar a {
-    text-decoration: none;
-    color: black;
-    margin: 0 15px;
-    font-weight:0;
-}
-
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0px;
-    height: 80vh;
+    height: 90vh;
     
 }
-.container
-
 
 .form-container {
     display: flex;
@@ -71,10 +37,6 @@ body {
     font-size: 30px;
     font-weight: 115;
     margin-bottom: 10px;
-}
-
-.form-box p{
-    margin-bottom: 28px ;
 }
 
 .form-box input {
@@ -150,12 +112,6 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-    .nav-bar {
-        display: none;
-    }
-    .header{
-        display: none;
-    }
     .container {
         flex-direction: column;
         align-items: center;

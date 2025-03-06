@@ -1,22 +1,24 @@
 <?php
 
-class User {
+class CadastroModel
+{
     private $conn;
-    private $table_name = "usuario"; // Nome da tabela no banco
-
     public $nome;
     public $email;
     public $senha;
     public $telefone;
 
-    public function __construct($db) {
-        $this->conn = $db;
+    public function __construct()
+    {
+        // A conexão com o banco de dados será feita dentro da própria classe CadastroModel
+        $this->conn = (new Database())->getConnection();
     }
 
     // Verificar se o email já existe
-    public function checkEmailExistente() {
-        $query = "SELECT Id_User FROM " . $this->table_name . " WHERE email = :email";
-        
+    public function checkEmailExistente()
+    {
+        $query = "SELECT Id_User FROM usuario WHERE email = :email";
+
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $this->email);
         $stmt->execute();
@@ -28,9 +30,10 @@ class User {
     }
 
     // Cadastrar novo usuário
-    public function cadastrar() {
-        $query = "INSERT INTO " . $this->table_name . " (nome, email, senha, telefone) VALUES (:nome, :email, :senha, :telefone)";
-        
+    public function salvar()
+    {
+        $query = "INSERT INTO usuario (nome, email, senha, telefone) VALUES (:nome, :email, :senha, :telefone)";
+
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':nome', $this->nome);
@@ -41,10 +44,10 @@ class User {
         if ($stmt->execute()) {
             return true;
         }
-        
+
         return false;
     }
 
-    
+
 }
 ?>
