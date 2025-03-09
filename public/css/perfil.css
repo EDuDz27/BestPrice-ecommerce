@@ -7,6 +7,7 @@
 
 body{
     overflow-x: hidden;
+    
 }
 
 .container{
@@ -17,21 +18,7 @@ body{
     justify-content: center;    
     width: 100vw;
     height: 90vh;
-    padding: 160px 0;
 
-}
-
-.form-perfil {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-}
-
-.editperfil {
-    width: fit-content;
-    padding: 70px;
-    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .editperfil h1 {
@@ -41,6 +28,7 @@ body{
 
 .editar,
 .editsenha {
+    width: 100%;
     margin: 0 30px 30px;
     display: grid;
     grid-template-columns: repeat(2, 300px);
@@ -53,9 +41,73 @@ body{
 .editsenha input {
     width: 300px;
     height: 33px;
-    border-radius: 3px;
+    border-radius: 12px;
     background: #F5F5F5;
     border: none;
     outline: none;
     padding: 8px 12px;
+}
+
+.editperfil {
+    width: fit-content;
+    padding: 70px;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border-radius: 12px;
+    position: relative; 
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.botao-sair {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #6f8842;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.botao-sair:hover {
+    background-color: #4c7423;
+    transform: scale(1.05);
+}
+
+
+@media screen and (max-width: 768px) {
+    .container{
+    }
+    .editperfil{
+        width: 360px;
+    padding: 20px;}
+    .editar,
+    .editsenha {
+        margin: 0;
+        grid-template-columns: repeat(1, 300px);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 20px 70px;
+    }
+    .botao-sair{
+        position: relative;
+        display: block;
+    }
+
+    .botoes{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      
+    }
+    .container{
+        height: 100vh;
+        width: 100vw;
+    }
 }
