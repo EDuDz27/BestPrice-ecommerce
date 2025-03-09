@@ -3,7 +3,10 @@
 ## 1. Acessar o Repositório do Git e Baixar o Projeto
 
 1. Acesse o repositório do projeto no GitHub.
-2. Faça o download do projeto ou clone o repositório na sua máquina local com o comando:
+   ```
+   https://github.com/EDuDz27/BestPrice-ecommerce
+   ```
+3. Faça o download do projeto ou clone o repositório na sua máquina local com o comando:
    ```sh
    git clone https://github.com/EDuDz27/BestPrice-ecommerce.git
    ```
