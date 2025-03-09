@@ -4,6 +4,7 @@ Acessar o repositório do Git e baixar o projeto:
 
 Acesse o repositório do projeto no GitHub.
 Faça o download do projeto ou clone o repositório na sua máquina local com o comando:
+<br>
 git clone https://github.com/EDuDz27/BestPrice-ecommerce.git
 
 
