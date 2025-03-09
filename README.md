@@ -25,7 +25,10 @@
 4. Após criar o banco de dados:
    - Abra o SQL do phpMyAdmin.
    - Execute o script para criar as tabelas.
-   - O código de criação das tabelas está disponível no repositório do projeto, na pasta **"database"**, no arquivo **"ecommerce.sql"**.
+   - O código de criação das tabelas está disponível google drive, link para o arquivo ".sql"
+     ```
+     https://drive.google.com/file/d/1Xbn3x5g9qLFEOdGMvA2-BQh6XDfYc-Ye/view?usp=sharing
+     ```
 
 ---
 
