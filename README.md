@@ -39,7 +39,7 @@
    config\database.php
    ```
 2. Abra esse arquivo e ajuste as credenciais do banco de dados (usuário, senha, nome do banco) conforme sua configuração do MySQL.
-3. **Nota**: Caso tenha seguido os passos corretamente, não será necessário alterar nada.
+3. **Nota**: Caso tenha seguido os passos corretamente e seu mySQL Xampp esteja na configuração padrão, não será necessário alterar nada.
 
 ---
 
