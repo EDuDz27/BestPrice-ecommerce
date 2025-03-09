@@ -1,52 +1,75 @@
-Instruções rodar o projeto
+# Instruções para Rodar o Projeto
 
-Acessar o repositório do Git e baixar o projeto:
+## 1. Acessar o Repositório do Git e Baixar o Projeto
 
-Acesse o repositório do projeto no GitHub.
-Faça o download do projeto ou clone o repositório na sua máquina local com o comando:
-<br>
-git clone https://github.com/EDuDz27/BestPrice-ecommerce.git
+1. Acesse o repositório do projeto no GitHub.
+2. Faça o download do projeto ou clone o repositório na sua máquina local com o comando:
+   ```sh
+   git clone https://github.com/EDuDz27/BestPrice-ecommerce.git
+   ```
 
+---
 
-Instalar o XAMPP:
+## 2. Instalar o XAMPP
 
-Baixe e instale o XAMPP a partir do site oficial: https://www.apachefriends.org/index.html.
-Após a instalação, abra o painel de controle do XAMPP e ligue os servidores Apache e MySQL.
+1. Baixe e instale o XAMPP a partir do site oficial: [Apache Friends](https://www.apachefriends.org/index.html).
+2. Após a instalação, abra o painel de controle do XAMPP e ligue os servidores **Apache** e **MySQL**.
 
+---
 
-Criar o banco de dados no MySQL:
+## 3. Criar o Banco de Dados no MySQL
 
-No painel de controle do XAMPP, clique em "Admin" ao lado de MySQL para acessar o phpMyAdmin.
-No phpMyAdmin, clique em "Novo" para criar um novo banco de dados.
-Digite o nome do banco de dados "ecommerce", e clique em "Criar".
-Depois de criar o banco de dados, abra o SQL do phpMyAdmin e execute o script para criar as tabelas. O código de criação das tabelas está disponível no repositório do projeto, na pasta "database", em um arquivo chamado "ecommerce.sql".
+1. No painel de controle do XAMPP, clique em **"Admin"** ao lado de MySQL para acessar o phpMyAdmin.
+2. No phpMyAdmin, clique em **"Novo"** para criar um novo banco de dados.
+3. Digite o nome do banco de dados **"ecommerce"** e clique em **"Criar"**.
+4. Após criar o banco de dados:
+   - Abra o SQL do phpMyAdmin.
+   - Execute o script para criar as tabelas.
+   - O código de criação das tabelas está disponível no repositório do projeto, na pasta **"database"**, no arquivo **"ecommerce.sql"**.
 
+---
 
-Configurar a conexão com o banco de dados:
+## 4. Configurar a Conexão com o Banco de Dados
 
-No repositório do projeto, procure o arquivo de configuração de banco de dados "BestPrice\config\database.php".
-Abra esse arquivo e ajuste as credenciais do banco de dados (usuário, senha, nome do banco) conforme a configuração do seu MySQL.
-(Caso tenha seguido os passos ao pé da letra, não sera necessario alterar nada).
+1. No repositório do projeto, localize o arquivo:
+   ```
+   BestPrice\config\database.php
+   ```
+2. Abra esse arquivo e ajuste as credenciais do banco de dados (usuário, senha, nome do banco) conforme sua configuração do MySQL.
+3. **Nota**: Caso tenha seguido os passos corretamente, não será necessário alterar nada.
 
+---
 
-Rodar o projeto no navegador:
+## 5. Rodar o Projeto no Navegador
 
-Mova os arquivos do projeto baixado para a pasta htdocs dentro da instalação do XAMPP (mova a pasta raiz "BestPrice" para dentro da htdocs)
+1. Mova os arquivos do projeto baixado para a pasta **htdocs** dentro da instalação do XAMPP:
+   ```
+   htdocs/BestPrice
+   ```
+2. No navegador, digite:
+   ```
+   localhost/BestPrice/
+   ```
 
-No navegador, digite:
-localhost/BestPrice/
+---
 
+## 6. Verificar o Funcionamento do Projeto
 
-Verificar o funcionamento do projeto:
+Após acessar **localhost/BestPrice**, o projeto deverá estar funcionando corretamente no seu navegador.
 
-Após acessar localhost/bestprice, o projeto deverá estar funcionando corretamente no seu navegador.
+---
 
+## 📌 Observações Finais
 
+- **Recomendamos utilizar:**
+  - **XAMPP v3.3.0**
 
+Caso encontre problemas, verifique se:
+- O XAMPP está executando corretamente.
+- O banco de dados foi criado corretamente e as tabelas foram importadas.
+- A configuração do banco de dados está correta no arquivo **database.php**.
 
+---
 
-Observações Final
-
-recomendamos usar essas versões:
-xampp v3.3.0
+🚀 **Agora você está pronto para rodar o projeto!**
 
