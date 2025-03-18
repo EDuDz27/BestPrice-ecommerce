@@ -21,7 +21,7 @@ class Router
                 
         } else {
             http_response_code(404);
-            echo "Erro 404 - Página não encontrada!";
+            header("Location: 404");
         }
     }
 }

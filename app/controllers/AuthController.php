@@ -13,9 +13,10 @@ class AuthController
         $this->loginModel = new UserModel();
     }
 
-    public function verificaSessao() {
+    public function verificaSessao()
+    {
         session_start();
-        if (!isset($_SESSION['user_email'])) {
+        if (!isset($_SESSION['user_id'])) {
             session_abort();
             $this->showForm();
         } else {
@@ -50,9 +51,9 @@ class AuthController
         }
     }
 
-    public function logout(){
+    public function logout()
+    {
         $this->loginModel->logout();
         $this->showForm();
     }
 }
-?>
