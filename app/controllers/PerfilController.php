@@ -13,7 +13,7 @@ class PerfilController
     public function index()
     {
         session_start();
-        if (!isset($_SESSION['user_email'])) {
+        if (!isset($_SESSION['user_id'])) {
             // Se o usuário não estiver logado, redireciona para o login
             header("Location: login");
             exit();

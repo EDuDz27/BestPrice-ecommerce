@@ -9,6 +9,25 @@ body{
     overflow-x: hidden;
     
 }
+/* icone de + */
+#plus{
+    font-size: 20px;
+    color: white;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: #6f8842;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    transition: 0.3s;
+}
+#plus:hover{
+    align-items: center;
+    background-color: #0a6f3d;
+    cursor: pointer;
+    transform: scale(1.05);
+}
 
 .container{
     background-color: #2f564218;
@@ -38,6 +57,7 @@ body{
 }
 
 .editperfil input,
+.endereco,
 .editsenha input {
     width: 300px;
     height: 33px;
@@ -62,7 +82,6 @@ body{
 
 .botao-sair {
     position: absolute;
-    bottom: 20px;
     right: 20px;
     background-color: #6f8842;
     color: white;
@@ -83,31 +102,32 @@ body{
 
 
 @media screen and (max-width: 768px) {
-    .container{
-    }
     .editperfil{
         width: 360px;
     padding: 20px;}
-    .editar,
-    .editsenha {
-        margin: 0;
+    .editar, .editsenha {
+        margin: 20px 0;
         grid-template-columns: repeat(1, 300px);
         grid-template-rows: repeat(2, 1fr);
         gap: 20px 70px;
     }
     .botao-sair{
         position: relative;
-        display: block;
+        width: auto;
+        right:0;
+       
     }
 
     .botoes{
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%;
+        margin-top: 10px;
       
     }
     .container{
-        height: 100vh;
+        height: 120vh;
         width: 100vw;
     }
 }
