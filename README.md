@@ -30,7 +30,7 @@
    - Execute o script para criar as tabelas.
    - O código de criação das tabelas está disponível google drive, link para o arquivo ".sql"
      ```
-     https://drive.google.com/file/d/1q7tgqpv8TipkPoBzw0JLuStJ2NVWJPPd/view?usp=sharing
+     https://drive.google.com/drive/folders/1cL6nlDyivvx65J52VSPi_zo3GcR3vnq9?usp=drive_link
      ```
 
 ---
