@@ -84,9 +84,9 @@
             <input id="confirmarNovaSenha" type="password" />
           </div>
         </div>
-        <div action="logout" class="botoes">
+        <a href="logout" class="botoes">
           <button type="submit" class="botao-sair">Sair</button>
-        </div>
+        </a>
       </div>
     </div>
   </section>

@@ -13,31 +13,47 @@ class UserModel
 
     public function login()
     {
-        // Verifica se o usuário já está logado (sessão)
         session_start();
         if (isset($_SESSION['user_id'])) {
-            return true; // O usuário já está logado
+            return true;
         }
 
-        // Caso o usuário não esteja logado, verifica as credenciais
         $query = "SELECT id_user, email, senha FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $this->email);
         $stmt->execute();
 
-        // Se o usuário existir e a senha for válida, faz o login
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Verifica se a senha está correta
             if (password_verify($this->senha, $row['senha'])) {
-                // Inicia a sessão e armazena o email na sessão
                 $_SESSION['user_id'] = $row['id_user'];
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function isAdmin($user_id)
+    {
+        // Faz a consulta no banco de dados para buscar o 'role' do usuário
+        $query = "SELECT role FROM " . $this->table_name . " WHERE id_user = :user_id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+    
+        // Se o usuário for encontrado, verifica o role
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            // Verifica se o role é 'admin'
+            if ($row['role'] === 'admin') {
+                return true; // O usuário tem role de admin
+            }
+        }
+    
+        return false; // O usuário não é admin ou não foi encontrado
     }
 
     public function buscaEnderecos()

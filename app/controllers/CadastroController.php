@@ -12,23 +12,15 @@ class CadastroController
         $this->cadastroModel = new CadastroModel();
     }
 
-    public function verificaSessao()
+    public function index()
     {
         session_start();
         if (!isset($_SESSION['user_id'])) {
             session_abort();
-            $this->showForm();
+            include 'app/views/cadastro_form.php';
         } else {
             header("Location: perfil");
             exit();
-        }
-    }
-
-    public function showForm()
-    {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
-            include 'app/views/cadastro_form.php';
         }
     }
 
@@ -85,7 +77,7 @@ class CadastroController
                 echo "Erro ao cadastrar o usuário!";
             }
         } else {
-            $this->verificaSessao();
+            $this->index();
         }
     }
 }
