@@ -14,7 +14,14 @@ class EnderecoController
 
     public function showForm()
     {
-        include 'app/views/endereco_form.php';
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            session_abort();
+            header("Location: login");
+            exit();
+        } else {
+            include 'app/views/endereco_form.php';
+        }
     }
 
     public function buscarCep()

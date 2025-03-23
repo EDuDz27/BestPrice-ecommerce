@@ -17,6 +17,7 @@
 
     <div class="container">
         <div class="endereco">
+
             <form action="endereco@cep" method="POST" class="form1">
                 <h2>Preencha o campo CEP </h2>
                 <div class="cep" style="display: flex;">
@@ -70,6 +71,7 @@
                     </div>
                 </form>
             <?php endif; ?>
+            <a href="perfil"><button class="bt-voltar">Voltar</button></a>
         </div>
     </div>
 

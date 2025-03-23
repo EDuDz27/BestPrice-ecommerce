@@ -63,7 +63,8 @@ input {
     position: relative; 
     background-color: white;
 }
-.bt-buscar, .bt-salvar{
+.bt-buscar, .bt-salvar, .bt-voltar{
+    /* text-decoration: none; */
     background-color: #6f8842;
     color: white;
     border: none;
@@ -76,7 +77,11 @@ input {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.bt-buscar:hover, .bt-salvar:hover {
+.bt-voltar{
+    margin-top: 20px;
+}
+
+.bt-buscar:hover, .bt-salvar:hover, .bt-voltar:hover {
     background-color: #4c7423;
     transform: scale(1.05);
 }
