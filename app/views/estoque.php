@@ -12,6 +12,12 @@
 </head>
 
 <body>
+
+    <?php
+        $admin = file_get_contents('app/views/admin.php');
+        echo $admin;
+    ?>
+
     <div class="container mt-5">
         <h2>Gerenciar Estoque</h2>
 
@@ -45,7 +51,7 @@
                                 <input type='hidden' name='produtos[]' value='{$produto['id_estoque']}'>
                                 <td>{$produto['nome']}</td>
                                 <td>
-                                    <img src='data:image/png;base64," . $foto . "' width='70' height='50'>
+                                    <img src='data:image/png;base64," . $foto . "' width='70' height='auto'>
                                 </td>
                                 <td>{$produto['quantidade']}</td>
                                 <td>R$ {$valor}</td>
@@ -215,7 +221,7 @@
             var nome = button.getAttribute('data-nome');
 
             var modal = this;
-            modal.querySelector('#produtoNomeExcluir').textContent = "Deseja realmente excluir o produto: " + nome + "?";
+            modal.querySelector('#produtoNomeExcluir').textContent = "Deseja realmente excluir o produto: '" + nome + "' ?";
             var confirmButton = modal.querySelector('#btnConfirmarExclusao');
             confirmButton.href = "excluir@estoque?action=excluir&estoque=" + id_estoque;
         });

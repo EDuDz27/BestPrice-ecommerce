@@ -32,8 +32,13 @@ $router->add('estoque',                 'AdminController',          'checkAdminA
 $router->add('adicionar@estoque',       'EstoqueController',        'adicionarEstoque');
 $router->add('excluir@estoque',         'EstoqueController',        'excluirEstoque');
 $router->add('editar@estoque',          'EstoqueController',        'editarEstoque');
+$router->add('desvincula@estoque',      'EstoqueController',        'desvincularEstoque');
+$router->add('vincular@estoque',        'EstoqueController',        'vincularEstoque');
 $router->add('add-produto',             'AdminController',          'checkAdminAccess');
+$router->add('gestao-produto',          'AdminController',          'checkAdminAccess');
 $router->add('produto@salvar',          'ProdutoController',        'salvarProduto'); 
+$router->add('produto@excluir',         'ProdutoController',        'excluirProduto'); 
+$router->add('produto@editar',          'ProdutoController',        'editarProduto'); 
 $router->add('404',                     'Error404Controller',       'index');
 
 
