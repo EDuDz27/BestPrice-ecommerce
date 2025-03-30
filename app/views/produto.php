@@ -15,63 +15,80 @@
 <body>
 
     <?php include("header.html"); ?>
+    <?php
+    if (!isset($estoques) || empty($estoques)) {
+        echo "<p>Produto não encontrado.</p>";
+        return;
+    }
+    ?>
 
     <div class="container">
         <div class="produto">
-            <div class="placeholder">
-                <img src="imgs/Frame 612.svg" alt="Produto 1">
+            <div id="carousel" class="img-box">
+                <div class="carousel-inner">
+                    <?php
+                    foreach ($estoques as $estoque) {
+                        $fotos[$estoque['id_estoque']] = base64_encode($estoque['foto']);
+                        echo "<div class='carousel-item'>
+                                    <img class='carousel-img' src='data:image/png;base64," . $fotos[$estoque['id_estoque']] . "'>
+                                </div>";
+                    }
+                    ?>
+                </div>
+                <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                <button class="next" onclick="moveSlide(1)">&#10095;</button>
             </div>
             <div class="produto-info">
-                <div class="descricao-produto">
-                    <h2>Pão Francês</h2>
+                <h2><?php echo "{$produto['nome']}"; ?></h2>
 
-                    <p class="preco">R$ 10,00</p>
-                    <p>PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.</p>
-                    <hr>
-                    <div class="colours">
-                    </div>
-                    <div class="botoes-size">
-                        <p>Tamanho:</p>
-                        <button type="button">XS</button>
-                        <button type="button">S</button>
-                        <button type="button">M</button>
-                        <button type="button">L</button>
-                        <button type="button">XL</button>
-                    </div>
-                    <p class="quant">Quantidade:</p>
-                    <div class="quantity-container">
-                        <button class="btn" onclick="decrease()">−</button>
-                        <span class="quantity" id="quantity">1</span>
-                        <button class="btn" onclick="increase()">+</button>
-                    </div>
-                    <div class="botoes">
-                        <button class="bt-carrinho">Adicionar ao Carrinho</button>
-                        <button class="buy">Comprar</button>
-
-                    </div>
-                    <div class="extra-infos">
-                        <div class="frete-gratis">
-                            <div>
-                                <i class="fa-solid fa-truck-fast"></i>
-                            </div>
-                            <div>
-                                <h3>Frete Grátis</h3>
-                                <a href="">Insira seu endereço para completar sua compra. </a>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="reembolso">
-                            <div>
-                                <i class="bi bi-arrow-repeat"></i>
-                            </div>
-                            <div>
-                                <h3>Pedir Reembolso</h3>
-                                <p>Até 30 dias para solicitação do reembolso.</p>
-                            </div>
-                        </div>
-                    </div>
+                <p id="itemPreco" class="preco"><?php echo 'R$ ' . $estoque['valor_un']; ?></p>
+                <p class='descricao'><?php echo nl2br(htmlspecialchars($produto['descricao'])); ?></p>
+                <hr>
+                <div class="colours">
+                </div>
+                <p>Variação:</p>
+                <div class="botoes-size">
+                    <?php
+                    $precos = [];
+                    foreach ($estoques as $estoque) {
+                        $precos[$estoque['id_estoque']] = $estoque['valor_un'];
+                        echo "<button type='button' value='{$estoque['id_estoque']}' onclick='atualizarPreco({$estoque['id_estoque']})'>{$estoque['descricao']}</button>";
+                    }
+                    ?>
+                </div>
+                <p class="quant">Quantidade:</p>
+                <div class="quantity-container">
+                    <button class="btn" type="button" onclick="decrease()">−</button>
+                    <input class="quantity" id="quantity" type="number" value="1"></input>
+                    <button class="btn" type="button" onclick="increase()">+</button>
+                </div>
+                <div class="botoes">
+                    <button class="bt-carrinho">Adicionar ao Carrinho</button>
+                    <button class="buy">Comprar</button>
 
                 </div>
+                <div class="extra-infos">
+                    <div class="frete-gratis">
+                        <div>
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <div>
+                            <h3>Frete Grátis</h3>
+                            <a href="">Insira seu endereço para completar sua compra. </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="reembolso">
+                        <div>
+                            <i class="bi bi-arrow-repeat"></i>
+                        </div>
+                        <div>
+                            <h3>Pedir Reembolso</h3>
+                            <p>Até 30 dias para solicitação do reembolso.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -79,6 +96,92 @@
 
     <?php include("footer.html"); ?>
 
+    <script>
+        const botoes = document.querySelectorAll(".botoes-size button");
+
+        botoes.forEach(botao => {
+            botao.addEventListener("click", () => {
+                // Remove a classe "ativo" de todos os botões
+                botoes.forEach(btn => btn.classList.remove("ativo"));
+
+                // Adiciona a classe "ativo" apenas ao botão clicado
+                botao.classList.add("ativo");
+            });
+        });
+        // Estoque e preços das variações
+        const estoque = <?php echo json_encode(array_column($estoques, 'quantidade', 'id_estoque')); ?>;
+        const precos = <?php echo json_encode(array_column($estoques, 'valor_un', 'id_estoque')); ?>;
+        const quantidadeElemento = document.getElementById('quantity');
+
+        quantidadeElemento.addEventListener('input', ajustarQuantidade);
+
+        let estoqueAtual = Object.keys(estoque)[0]; // Define um estoque inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            atualizarPreco(estoqueAtual);
+        });
+
+        function atualizarPreco(id_estoque) {
+            const precoElemento = document.getElementById('itemPreco');
+            precoElemento.textContent = `R$ ${parseFloat(precos[id_estoque]).toFixed(2)}`;
+            estoqueAtual = id_estoque; // Atualiza a variação selecionada
+            ajustarQuantidade();
+        }
+
+        function ajustarQuantidade() {
+            let quantidade = parseInt(quantidadeElemento.value);
+            let maxQuantidade = estoque[estoqueAtual];
+
+            if (quantidade > maxQuantidade) {
+                quantidadeElemento.value = maxQuantidade;
+            }
+
+            if (quantidade < 1) {
+                quantidadeElemento.value = 1;
+            }
+
+            if (quantidadeElemento.value == '' || quantidadeElemento.value == null){
+                quantidadeElemento.value = 1;
+            }
+        }
+
+        function increase() {
+            let quantidade = parseInt(quantidadeElemento.value);
+            let maxQuantidade = estoque[estoqueAtual];
+            if (quantidade < maxQuantidade) {
+                quantidadeElemento.value = quantidade + 1;
+            }
+        }
+
+        function decrease() {
+            let quantidade = parseInt(quantidadeElemento.value);
+            if (quantidade > 1) {
+                quantidadeElemento.value = quantidade - 1;
+            }
+        }
+
+        let index = 0; // Índice da imagem atual
+
+        function moveSlide(step) {
+            const slides = document.querySelectorAll('.carousel-item');
+            index += step;
+
+            // Se o índice ultrapassar os limites, volta para o começo ou para o final
+            if (index >= slides.length) {
+                index = 0;
+            } else if (index < 0) {
+                index = slides.length - 1;
+            }
+
+            // Ajusta a posição do carrossel
+            const carouselInner = document.querySelector('.carousel-inner');
+            carouselInner.style.transform = `translateX(${-index * 100}%)`;
+        }
+
+        // Inicializa o carrossel mostrando a primeira imagem
+        document.addEventListener('DOMContentLoaded', () => {
+            moveSlide(0);
+        });
+    </script>
 
     <script src="produto.js"></script>
 </body>

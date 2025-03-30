@@ -60,6 +60,35 @@ class EstoqueController
             }
         }
     }
+    
+    public function desvincularEstoque()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET' && $_GET['action'] == 'desvincular') {
+            $id_estoque = $_GET['id_estoque'];
+        
+            if ($this->estoqueModel->desvincular($id_estoque)) {
+                header('Location: gestao-produto');
+                exit();
+            } else {
+                echo "Erro ao atualizar o produto.";
+            }
+        }
+    }
+
+    public function vincularEstoque()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id_produto = isset($_POST['id_produto']) ? $_POST['id_produto'] : null;
+            $estoques = $_POST['estoques'];
+
+            if ($this->estoqueModel->vincular($id_produto, $estoques)) {
+                header('Location: gestao-produto');
+                exit();
+            } else {
+                echo "Erro ao atualizar o produto.";
+            }
+        }
+    }
 
     public function excluirEstoque()
     {

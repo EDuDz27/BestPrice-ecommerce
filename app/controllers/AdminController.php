@@ -33,6 +33,10 @@
                     $this->produtoController->adicionarCatalogo();
                     exit();
                 }
+                if ($page === 'gestao-produto') {
+                    $this->produtoController->editarCatalogo();
+                    exit();
+                }
                 if ($page === 'estoque') {
                     $this->estoqueController->exibirEstoque();
                     exit();

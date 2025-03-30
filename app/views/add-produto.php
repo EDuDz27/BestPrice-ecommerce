@@ -16,7 +16,14 @@
     <link rel="stylesheet" href="public/css/add-produto.css">
 </head>
 
+
+
 <body>
+
+    <?php
+        $admin = file_get_contents('app/views/admin.php');
+        echo $admin;
+    ?>
 
     <section class="container">
         <form action="produto@salvar" method="POST" enctype="multipart/form-data">
@@ -29,8 +36,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="id_categoria">Categoria</label>
-                    <input type="text" name="id_categoria" id="id_categoria" required>
+                    <label for="categoria">Categoria</label>
+                    <select name="categoria" id="categoria">
+                        <?php
+                        foreach ($categorias as $categoria) {
+                            echo '<option value="' . $categoria['id_categoria'] . '">' . $categoria['nome'] . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -63,7 +76,7 @@
 
                     <label>Imagem</label>
 
-                    <label>Produto</label>
+                    <label>Item</label>
 
                     <label>Detalhes</label>
 
@@ -77,9 +90,13 @@
                 if (!empty($produtos)) {
                     foreach ($produtos as $produto) {
 
+                        if ($produto['id_produto']) {
+                            continue;
+                        }
+
                         $fotoBlob = $produto['foto'];
                         $foto = base64_encode($fotoBlob);
-                        
+
                         $valor = number_format($produto['valor_un'], 2, ',', '.');
 
                         echo "<div class='box-itens'>

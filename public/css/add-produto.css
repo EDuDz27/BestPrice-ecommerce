@@ -66,7 +66,7 @@ form{
 }
 
 
-.form-group input {
+.form-group input, .form-group select {
     border-radius: 3px;
     border: 1px solid #ccc;
     padding: 5px;

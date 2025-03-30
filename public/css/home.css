@@ -210,6 +210,10 @@ body {
     margin-bottom: 0.5rem;
 }
 
+.product-info a {
+    text-decoration: none;
+}
+
 
 .rating {
     color: #ffd700;

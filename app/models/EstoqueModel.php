@@ -55,22 +55,31 @@ class EstoqueModel
 
     public function atualizar($id_estoque, $nome, $foto, $quantidade, $valor_un, $descricao)
     {
-        $query = "UPDATE " . $this->table . " 
-                  SET Nome = :nome, 
-                      Foto = :foto, 
-                      Quantidade = :quantidade, 
-                      Valor_UN = :valor_un, 
-                      Descricao = :descricao 
-                  WHERE Id_Estoque = :id_estoque";
-
-        $stmt = $this->conn->prepare($query);
-
-        if ($foto && $foto != null) {
+        if ($foto) {
             $foto_blob = file_get_contents($foto);
+            $query = "UPDATE " . $this->table . " 
+                      SET Nome = :nome, 
+                          Foto = :foto, 
+                          Quantidade = :quantidade, 
+                          Valor_UN = :valor_un, 
+                          Descricao = :descricao 
+                      WHERE Id_Estoque = :id_estoque";
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindValue(':foto', $foto_blob, PDO::PARAM_LOB);
+        } else {
+            $query = "UPDATE " . $this->table . " 
+                      SET Nome = :nome, 
+                          Quantidade = :quantidade, 
+                          Valor_UN = :valor_un, 
+                          Descricao = :descricao 
+                      WHERE Id_Estoque = :id_estoque";
+
+            $stmt = $this->conn->prepare($query);
         }
 
         $stmt->bindValue(':nome', $nome, PDO::PARAM_STR);
-        $stmt->bindValue(':foto', $foto_blob, PDO::PARAM_LOB);
         $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
         $stmt->bindValue(':valor_un', $valor_un, PDO::PARAM_STR);
         $stmt->bindValue(':descricao', $descricao, PDO::PARAM_STR);
@@ -78,6 +87,37 @@ class EstoqueModel
 
         return $stmt->execute();
     }
+
+    public function desvincular($id_estoque)
+    {
+
+        $query = "UPDATE {$this->table} SET Id_Produto = NULL WHERE Id_Estoque = :id_estoque";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindValue(':id_estoque', $id_estoque, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function vincular($id_produto, $id_estoques)
+    {
+        $placeholders = array_map(function($index) {
+            return ":id_estoque{$index}";
+        }, array_keys($id_estoques));
+
+        $placeholdersString = implode(', ', $placeholders);
+
+        $query = "UPDATE {$this->table} SET Id_Produto = :id_produto WHERE Id_Estoque IN ({$placeholdersString})";
+        $stmt = $this->conn->prepare($query);
+
+        foreach ($id_estoques as $index => $id_estoque) {
+            $stmt->bindValue(":id_estoque{$index}", $id_estoque, PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':id_produto', $id_produto, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     public function excluir($id_estoque)
     {
         $query = "DELETE FROM " . $this->table . " WHERE Id_Estoque = :id_estoque";
@@ -85,5 +125,4 @@ class EstoqueModel
         $stmt->bindValue(':id_estoque', $id_estoque, PDO::PARAM_INT);
         return $stmt->execute();
     }
-
 }
