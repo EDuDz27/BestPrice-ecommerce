@@ -43,7 +43,7 @@ header nav ul li {
     outline: none;
     background-color: #F5F5F5;
    .search input{
-  background: url("../../public/img/Vector.svg") no-repeat left 10px center;
+  background: url("../../public/img/Vector.svg") no-repeat right 10px center;
     background-size: 16px;
 }
 
