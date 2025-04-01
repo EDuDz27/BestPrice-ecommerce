@@ -201,7 +201,7 @@
 
                                 $valor = number_format($produto['valor_un'], 2, ',', '.');
 
-                                echo "<div class='box-itens'>
+                                echo "<div class='box-itens1'>
 
                             <div class='linha'>
                                 <input type='checkbox' name='produtos[]' value='{$produto['id_estoque']}'> 
