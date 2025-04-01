@@ -15,13 +15,27 @@ body{
     font-size: 14px;
 }
 
-.container{
+.conteiner{
     display: flex;
     height: 100vh;
     align-items: center;
 }
+.addproduto{
+    display: flex;
+}
+
+
+
+.box{
+    margin-left: 30px;
+    display: flex;
+
+    align-items: center;
+
+}
 
 .tamanho {
+    height: 500px; /* Defina uma altura para manter a estrutura */
     display: flex;
     flex-direction: column; /* Alinha os elementos verticalmente */
     justify-content: space-between; /* Distribui espaço entre os elementos */
@@ -32,20 +46,15 @@ body{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-form{
-    display: flex;
-}
-
 .form-group{
     margin: 10px;
-    display: flex;
-    flex-direction: column;
+    align-items:center;
+    width: 250px;
 }
 
 .form-buttons {
     display: flex;
     justify-content: center;
-    margin-top: 60px; /* Empurra o botão para o final do fieldset */
     
 }
 .form-buttons .btn {
@@ -66,7 +75,10 @@ form{
 }
 
 
-.form-group input, .form-group select {
+
+.form-group input {
+    width: 250px;
+    height: 27px;
     border-radius: 3px;
     border: 1px solid #ccc;
     padding: 5px;
@@ -74,6 +86,7 @@ form{
 }
 
 .form-group textarea{
+    width: 260px;
     height: 150px;
     border-radius: 3px;
     border: 1px solid #ccc;
@@ -102,12 +115,7 @@ form{
     
 }
 
-.titulo label{
-    width: 140px;
-    display: flex;
-    justify-content: center;
-    font-weight: bold;
-}
+
 
 
 
@@ -125,27 +133,98 @@ form{
 
 }
 
-.linha{
+.linha1{
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    width: 140px;
 }
-
-.linha p{
-    margin: 0;
-    padding: 0;
+.linha{
+    display: flex;
+    flex-direction: column;
 }
 
 #btn2 {
     display: none;
 }
 
-@media screen and (max-width: 500px){
+
+
+
+@media screen and (max-width: 500px) {
+    .conteiner {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start; 
+        padding: 5px;
+    }
+
+    .box {
+        margin-left: 0;
+        width: 100%;
+        flex-direction: column;
+        font-size: 16px;
+    }
+    .box-itens{
+        display: none;
+    }
+    .box-itens1{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    justify-content: none;
+    gap: 20px;
+    display: flex;
+    }
 
     .tamanho {
         display: none;
     }
-    
 
+    .adProduct {
+        width: 100%;
+        height: auto;
+        
+    }
+
+    .titulo {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 10px;
+        justify-content: space-evenly;
+    }
+
+    .titulo .retirar { 
+        display: none;
+    }
+
+
+    .box-itens1 > #retirar {
+        display: none;
+        
+
+    }
+
+
+    .linha1, .linha {
+        width: 100%;
+        align-items: center;
+        margin: 5px 0;
+        
+    }
+
+    .linha #retirar {
+        display: none;
+       
+
+    }
+
+    .linha img {
+        display: none;
+        
+    }
+
+    #btn2 {
+        display: block;
+        margin-top: 20px;
+    }
 }
