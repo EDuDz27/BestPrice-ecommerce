@@ -16,8 +16,10 @@
     --gray: #666;
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
-
+/* Scroll suave */
+html{
+    scroll-behavior: smooth;
+}
 /* Estilos gerais */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
