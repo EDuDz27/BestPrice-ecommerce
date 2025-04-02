@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +11,9 @@
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Carregar o JS do Bootstrap para o Modal -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -51,19 +53,23 @@
           <div>
             <label>Endereço</label>
             <div style="display: flex; align-items: center">
-              <select class="endereco" name="endereco" id="endereco">
-                <?php
+            <select class="endereco" name="endereco" id="endereco">
+              <?php
                 if (!empty($userInfo['endereco'])) {
-                  foreach ($userInfo['endereco'] as $endereco) {
-                    echo "<option value=\"$endereco\">$endereco</option>";
-                  }
-                } else {
-                  echo "<option value=\"\">Nenhum endereço encontrado</option>";
+                foreach ($userInfo['endereco'] as $endereco) {
+                  echo "<option value=\"$endereco\">$endereco</option>";
                 }
-                ?>
-              </select>
+                  } else {
+                  echo "<option value=\"\">Nenhum endereço encontrado</option>";
+                  }
+              ?>
+            </select>
               <a href="endereco" style="text-decoration: none;">
-                <i style="margin-left: 10px" id="plus" class="bi bi-plus"></i>
+                <i style="margin-left: 10px; margin-right: 10px;" id="plus" class="bi bi-plus"></i>
+              </a>
+              <a href="" style="text-decoration: none;" data-bs-toggle='modal'
+              data-bs-target='#excluirenderecomodal'>
+              <id= class="bi bi-trash3-fill" id="trash"></id=>
               </a>
             </div>
           </div>
@@ -90,6 +96,27 @@
       </div>
     </div>
   </section>
+  <!--FormModal-->
+  <div class="modal fade" id="excluirenderecomodal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="excluirenderecomodal">Excluir Endereço</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 style="text-align: center;" id="EnderecoNomeExcluir">Deseja realmente excluir este endereço?</h5>
+                        <div class="botoes-confirm" style="display: flex; justify-content: center; gap:20px;">
+                            <a href="#" id="btnConfirmarExclusao" class="btn btn-danger">Sim</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  <!--Fim FormModal-->
+
 
   <!-- Rodapé -->
   <?php include 'footer.html' ?>
