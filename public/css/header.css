@@ -80,6 +80,13 @@ header nav ul li {
     align-items: center;
     position: relative;
 }
+.user-icon i.ativo1{
+    align-items: center;
+    background-color: #0a6f3d;
+    border-radius: 50%;
+    color: white;
+    padding:5px;
+}
 
 .cart-icon {
     font-size: 19px;
