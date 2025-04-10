@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
-    const botoes = document.querySelectorAll(".user-icon i");
+    const botoes = document.querySelectorAll(".user-icon");
 
     botoes.forEach(botao => {
         botao.addEventListener("click", (event) => {
