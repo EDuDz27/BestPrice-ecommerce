@@ -46,31 +46,34 @@ header nav ul li {
     background-size: 16px;
 }
 
-.nav-links nav ul {
+.nav-links ul {
     display: flex;
     list-style: none;
     gap: 2rem;
 }
 
 
-.nav-links nav ul li a {
-    color: var(--white);
+.nav-links ul li a {
+    color: #000;
     text-decoration: none;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: color 0.3s ease;
+    transition: 0.3s ease;
 }
 
-.nav-links nav ul li a:hover {
-    color: #a8e6bc;
+.nav-links ul li a:hover{
+    color: #0a6f3d;
+    transform: scale(1.05);
 }
+
 
 .icons-container {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+    position: static;
     /* Espaço entre os ícones */
 }
 
@@ -80,12 +83,27 @@ header nav ul li {
     align-items: center;
     position: relative;
 }
-.user-icon i.ativo1{
+.cart-icon, .user-icon{
+    display: flex;
+    justify-content: center;
+    height: 26px;
+    width:26px;
+    transition: 0.5s;
+}
+.cart-icon:hover{
+    color: #0a6f3d;
     align-items: center;
     background-color: #0a6f3d;
     border-radius: 50%;
     color: white;
-    padding:5px;
+    
+}
+ .user-icon.ativo1{
+    align-items: center;
+    background-color: #0a6f3d;
+    border-radius: 50%;
+    color: white;
+    
 }
 
 .cart-icon {
