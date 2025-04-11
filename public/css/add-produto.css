@@ -76,7 +76,7 @@ body{
 
 
 
-.form-group input {
+.form-group input, .form-group select {
     width: 250px;
     height: 27px;
     border-radius: 3px;
