@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -12,27 +12,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
+   
+    <!-- Estilo customizado da tela -->
     <link rel="stylesheet" href="public/css/add-produto.css">
 </head>
 
 <body>
-
+     <!-- Inclui o layout da área administrativa -->
     <?php
     $admin = file_get_contents('app/views/admin.php');
     echo $admin;
     ?>
 
     <section class="conteiner">
+        <!-- Formulário principal para adicionar produto -->
         <form class="addproduto" action="produto@salvar" method="POST" enctype="multipart/form-data">
             <fieldset class="tamanho">
                 <legend><b>Adicionar Catálogo</b></legend>
+                 <!-- Campo: nome do produto -->
 
                 <div class="form-group">
                     <label for="nome">Nome do produto</label>
                     <input type="text" name="nome" id="nome" required>
                 </div>
-
+            <!-- Campo: seleção de categoria -->
                 <div class="form-group">
                     <label for="categoria">Categoria</label>
                     <select name="categoria" id="categoria">
@@ -43,12 +46,12 @@
                         ?>
                     </select>
                 </div>
-
+                <!-- Campo: descrição -->
                 <div class="form-group">
                     <label for="descricao">Descrição</label><br>
                     <textarea name="descricao" id="descricao" cols="30" rows="3"></textarea>
                 </div>
-
+                <!-- Upload de imagem -->
                 <div class="form-group">
                     <label>Adicionar Imagem</label>
                     <input type="file" name="foto" id="foto">
@@ -75,7 +78,8 @@
                     </button>
 
                 </div>
-
+                
+                <!-- Cabeçalho da tabela/lista de produtos -->
                 <div class="titulo">
 
                     <label>Adicionar</label>
@@ -188,7 +192,7 @@
 
                         </div>
                         <?php
-
+     // <!-- Produtos do estoque (igual ao de fora do modal) -->
                         if (!empty($produtos)) {
                             foreach ($produtos as $produto) {
 
