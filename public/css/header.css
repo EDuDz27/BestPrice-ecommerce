@@ -278,8 +278,6 @@ header nav ul li {
     .nav-links.active {
         display: flex;
     }
-
-    .heart-icon,
     .user-icon {
         display: none;
 
@@ -288,5 +286,8 @@ header nav ul li {
 
     .btn-abrir-menu {
         display: block;
+    }
+    .icons-container{
+        gap:10px;
     }
 }
