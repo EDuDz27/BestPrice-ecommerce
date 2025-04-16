@@ -337,7 +337,6 @@ body {
     margin: 10% auto;
     padding: 20px;
     border-radius: 8px;
-    width: 90%;
     width: 400px;
     position: relative;
     text-align: center;
@@ -374,6 +373,9 @@ body {
     .banner h2 {
         font-size: 2rem;
     }
+    .modal-content {
+        width: 90%;
+      }
 
 
     .categories {
