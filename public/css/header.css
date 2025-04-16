@@ -63,7 +63,7 @@ header nav ul li {
     transition: 0.3s ease;
 }
 
-.nav-links ul li a:hover{
+.nav-links ul li a:hover {
     color: #0a6f3d;
     transform: scale(1.05);
 }
@@ -83,27 +83,31 @@ header nav ul li {
     align-items: center;
     position: relative;
 }
-.cart-icon, .user-icon{
+
+.cart-icon,
+.user-icon {
     display: flex;
     justify-content: center;
     height: 26px;
-    width:26px;
+    width: 26px;
     transition: 0.5s;
 }
-.cart-icon:hover{
+
+.cart-icon:hover {
     color: #0a6f3d;
     align-items: center;
     background-color: #0a6f3d;
     border-radius: 50%;
     color: white;
-    
+
 }
- .user-icon.ativo1{
+
+.user-icon.ativo1 {
     align-items: center;
     background-color: #0a6f3d;
     border-radius: 50%;
     color: white;
-    
+
 }
 
 .cart-icon {
@@ -278,6 +282,8 @@ header nav ul li {
     .nav-links.active {
         display: flex;
     }
+
+    .heart-icon,
     .user-icon {
         display: none;
 
@@ -286,8 +292,5 @@ header nav ul li {
 
     .btn-abrir-menu {
         display: block;
-    }
-    .icons-container{
-        gap:10px;
     }
 }

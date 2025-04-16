@@ -17,6 +17,9 @@ class EstoqueModel
 
         $foto_blob = ($foto) ? file_get_contents($foto) : NULL;
 
+        // Formata o valor unitário para usar ponto como separador decimal
+        $valor_un = str_replace(',', '.', $valor_un);
+
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindValue(':nome', $nome);
@@ -78,6 +81,9 @@ class EstoqueModel
 
             $stmt = $this->conn->prepare($query);
         }
+
+        // Formata o valor unitário para usar ponto como separador decimal
+        $valor_un = str_replace(',', '.', $valor_un);
 
         $stmt->bindValue(':nome', $nome, PDO::PARAM_STR);
         $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);

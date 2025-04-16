@@ -197,14 +197,31 @@
     </div>
 
     <script>
+        // Formata o valor unitário para exibição com vírgula
+        document.getElementById('valor_un').addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Remove qualquer caractere que não seja número, ponto ou vírgula
+            value = value.replace(/[^\d,.]/g, '');
+            // Substitui vírgula por ponto para cálculo
+            let numericValue = value.replace(',', '.');
+            // Verifica se é um número válido
+            if (!isNaN(numericValue)) {
+                // Formata para exibição com vírgula
+                e.target.value = value;
+            }
+        });
 
+        // Formata o valor unitário no modal de edição
         document.getElementById('editarprodutomodal').addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget; // Botão que acionou o modal
+            var button = event.relatedTarget;
             var id_estoque = button.getAttribute('data-id');
             var nome = button.getAttribute('data-nome');
             var quantidade = button.getAttribute('data-quantidade');
             var valor_un = button.getAttribute('data-valor_un');
             var descricao = button.getAttribute('data-descricao');
+
+            // Formata o valor unitário para exibição com vírgula
+            valor_un = valor_un.replace('.', ',');
 
             var modal = this;
             modal.querySelector('input[name="id_estoque"]').value = id_estoque;
