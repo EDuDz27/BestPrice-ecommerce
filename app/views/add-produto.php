@@ -1,230 +1,247 @@
-*{
-    margin: 0;
-    padding: 0;
+<!DOCTYPE html>
+<html lang="pt-br">
 
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
 
-:root {
-    --main-color : #135327; /*Cor Verde  Padrão*/
-    
-    
-}
+    <!-- Link Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+   
+    <!-- Estilo customizado da tela -->
+    <link rel="stylesheet" href="public/css/add-produto.css">
+</head>
 
-body{
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-}
+<body>
+     <!-- Inclui o layout da área administrativa -->
+    <?php
+    $admin = file_get_contents('app/views/admin.php');
+    echo $admin;
+    ?>
 
-.conteiner{
-    display: flex;
-    height: 100vh;
-    align-items: center;
-}
-.addproduto{
-    display: flex;
-}
+    <section class="conteiner">
+        <!-- Formulário principal para adicionar produto -->
+        <form class="addproduto" action="produto@salvar" method="POST" enctype="multipart/form-data">
+            <fieldset class="tamanho">
+                <legend><b>Adicionar Catálogo</b></legend>
+                 <!-- Campo: nome do produto -->
+
+                <div class="form-group">
+                    <label for="nome">Nome do produto</label>
+                    <input type="text" name="nome" id="nome" required>
+                </div>
+            <!-- Campo: seleção de categoria -->
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select name="categoria" id="categoria">
+                        <?php
+                        foreach ($categorias as $categoria) {
+                            echo '<option value="' . $categoria['id_categoria'] . '">' . $categoria['nome'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <!-- Campo: descrição -->
+                <div class="form-group">
+                    <label for="descricao">Descrição</label><br>
+                    <textarea name="descricao" id="descricao" cols="30" rows="3"></textarea>
+                </div>
+                <!-- Upload de imagem -->
+                <div class="form-group">
+                    <label>Adicionar Imagem</label>
+                    <input type="file" name="foto" id="foto">
+                </div>
+
+                <div class="form-buttons">
+                    <input class="btn" type="submit" value="Enviar">
+
+                </div>
 
 
-
-.box{
-    margin-left: 30px;
-    display: flex;
-
-    align-items: center;
-
-}
-
-.tamanho {
-    height: 500px; /* Defina uma altura para manter a estrutura */
-    display: flex;
-    flex-direction: column; /* Alinha os elementos verticalmente */
-    justify-content: space-between; /* Distribui espaço entre os elementos */
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.form-group{
-    margin: 10px;
-    align-items:center;
-    width: 250px;
-}
-
-.form-buttons {
-    display: flex;
-    justify-content: center;
-    
-}
-.form-buttons .btn {
-    margin-right: 10px;
-    padding: 10px 20px;
-    background-color: var(--main-color);
-    color:#fff;
-    border: 1px solid #000000;
-    border-radius: 3px;
-    cursor: pointer;
-    border: none;
-}
-
-.form-buttons .btn:hover {
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-    border: 1px solid #000000;
-}
+            </fieldset>
 
 
 
-.form-group input, .form-group select {
-    width: 250px;
-    height: 30px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    padding: 0px;
-    outline: none;
-}
+            <div class="adProduct">
 
-.form-group textarea{
-    width: 260px;
-    height: 150px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-}
+                <!--Botão quando for apertar ele vai abrir o modal-->
+                <!--So quando tiver responsivo-->
+                <div class="btn3">
+                    <button type="button" id="btn2" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Adicionar Catálogo
+                    </button>
 
+                </div>
+                
+                <!-- Cabeçalho da tabela/lista de produtos -->
+                <div class="titulo">
 
-.adProduct {
-    display: flex;
-    height: 550px;
-    width: 980px;
-    flex-direction: column;
-    align-items: center;
-    
+                    <label>Adicionar</label>
 
-}
+                    <label class="retirar">Imagem</label>
 
-.titulo{
-    display: flex;
-    justify-content: row;
-    align-items: center;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    justify-content: space-evenly;
-    width: 900px;
-    height: 80px;
-    
-}
+                    <label>Produto</label>
 
+                    <label>Detalhes</label>
 
+                    <label>Quantidade</label>
 
+                    <label>Preço</label>
+                </div>
 
+                <?php
 
-.box-itens {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    width: 900px;
-    height: 80px;
-    justify-content: space-evenly;
+                if (!empty($produtos)) {
+                    foreach ($produtos as $produto) {
 
-}
+                        if ($produto['id_produto']) {
+                            continue;
+                        }
 
-.linha1{
-    display: flex;
-    flex-direction: row;
-}
-.linha{
-    display: flex;
-    flex-direction: column;
-}
+                        $fotoBlob = $produto['foto'];
+                        $foto = base64_encode($fotoBlob);
 
-#btn2 {
-    display: none;
-}
+                        $valor = number_format($produto['valor_un'], 2, ',', '.');
 
+                        echo "<div class='box-itens'>
 
+                            <div class='linha'>
+                                <input type='checkbox' name='produtos[]' value='{$produto['id_estoque']}'> 
+                            </div>
 
+                            <div class='linha' id='retirar'>
+                                <img src='data:image/png;base64," . $foto . "' width='70' height='50'>
+                            </div>
+                                
+                            <div class='linha'>
+                                <p>{$produto['nome']}</p>
+                            </div>
 
-@media screen and (max-width: 500px) {
-    .conteiner {
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start; 
-        padding: 5px;
-    }
+                            <div class='linha'>
+                                <p>{$produto['descricao']}</p>
+                            </div>
+                                                            
+                            <div class='linha'>
+                                <p>{$produto['quantidade']}</p>
+                            </div>
 
-    .box {
-        margin-left: 0;
-        width: 100%;
-        flex-direction: column;
-        font-size: 16px;
-    }
-    .box-itens{
-        display: none;
-    }
-    .box-itens1{
-    width: 100%;
-    height: auto;
-    padding: 10px;
-    justify-content: none;
-    gap: 20px;
-    display: flex;
-    }
+                            <div class='linha'>
+                                <p>R$ {$valor}</p>
+                            </div>
+                        </div>";
+                    }
+                } else {
+                    echo "<p>Nenhum produto encontrado no estoque.</p>";
+                }
+                ?>
 
-    .tamanho {
-        display: none;
-    }
+            </div>
 
-    .adProduct {
-        width: 100%;
-        height: auto;
-        
-    }
+        </form>
 
-    .titulo {
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        padding: 10px;
-        justify-content: space-evenly;
-    }
+    </section>
 
-    .titulo .retirar { 
-        display: none;
-    }
+    <!-- Modal para o botão  bootstrap-->
 
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h5 class="modal-title">Adicionar Catálogo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="produto@salvar" method="POST" enctype="multipart/form-data">
+                        <legend><b>Adicionar Catálogo</b></legend>
 
-    .box-itens1 > #retirar {
-        display: none;
-        
+                        <div class="form-group">
+                            <label for="nome">Nome do produto</label>
+                            <input type="text" name="nome" id="nome" required>
+                        </div>
 
-    }
+                        <div class="form-group">
+                            <label for="categoria">Categoria</label>
+                            <select name="categoria" id="categoria">
+                                <?php
+                                foreach ($categorias as $categoria) {
+                                    echo '<option value="' . $categoria['id_categoria'] . '">' . $categoria['nome'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="descricao">Descrição</label>
+                            <textarea name="descricao" id="descricao" cols="30" rows="3"></textarea>
+                        </div>
 
-    .linha1, .linha {
-        width: 100%;
-        align-items: center;
-        margin: 5px 0;
-        
-    }
+                        <div class="form-group">
+                            <label>Adicionar Imagem</label>
+                            <input type="file" name="foto" id="foto">
+                        </div>
 
-    .linha #retirar {
-        display: none;
-       
+                        <div class="form-buttons">
+                            <input class="btn" type="submit" value="Enviar">
 
-    }
+                        </div>
+                        <?php
+     // <!-- Produtos do estoque (igual ao de fora do modal) -->
+                        if (!empty($produtos)) {
+                            foreach ($produtos as $produto) {
 
-    .linha img {
-        display: none;
-        
-    }
+                                if ($produto['id_produto']) {
+                                    continue;
+                                }
 
-    #btn2 {
-        display: block;
-        margin-top: 20px;
-    }
-}
+                                $fotoBlob = $produto['foto'];
+                                $foto = base64_encode($fotoBlob);
+
+                                $valor = number_format($produto['valor_un'], 2, ',', '.');
+
+                                echo "<div class='box-itens1'>
+
+                            <div class='linha'>
+                                <input type='checkbox' name='produtos[]' value='{$produto['id_estoque']}'> 
+                            </div>
+
+                            <div class='linha' id='retirar'>
+                                <img src='data:image/png;base64," . $foto . "' width='70' height='50'>
+                            </div>
+                                
+                            <div class='linha'>
+                                <p>{$produto['nome']}</p>
+                            </div>
+
+                            <div class='linha'>
+                                <p>{$produto['descricao']}</p>
+                            </div>
+                                                            
+                            <div class='linha'>
+                                <p>{$produto['quantidade']}</p>
+                            </div>
+
+                            <div class='linha'>
+                                <p>R$ {$valor}</p>
+                            </div>
+                        </div>";
+                            }
+                        } else {
+                            echo "<p>Nenhum produto encontrado no estoque.</p>";
+                        }
+                        ?>
+
+                    </form>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
