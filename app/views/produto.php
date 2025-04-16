@@ -50,9 +50,11 @@
                 <div class="botoes-size">
                     <?php
                     $precos = [];
+                    $index = 0;
                     foreach ($estoques as $estoque) {
                         $precos[$estoque['id_estoque']] = $estoque['valor_un'];
-                        echo "<button type='button' value='{$estoque['id_estoque']}' onclick='atualizarPreco({$estoque['id_estoque']})'>{$estoque['descricao']}</button>";
+                        echo "<button type='button' value='{$estoque['id_estoque']}' data-index='{$index}' onclick='atualizarPreco({$estoque['id_estoque']}, {$index})'>{$estoque['descricao']}</button>";
+                        $index++;
                     }
                     ?>
                 </div>
@@ -63,9 +65,8 @@
                     <button class="btn" type="button" onclick="increase()">+</button>
                 </div>
                 <div class="botoes">
-                    <button class="bt-carrinho">Adicionar ao Carrinho</button>
+                    <button class="bt-carrinho" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
                     <button class="buy">Comprar</button>
-
                 </div>
                 <div class="extra-infos">
                     <div class="frete-gratis">
@@ -98,6 +99,7 @@
 
     <script>
         const botoes = document.querySelectorAll(".botoes-size button");
+        const carouselInner = document.querySelector('.carousel-inner');
 
         botoes.forEach(botao => {
             botao.addEventListener("click", () => {
@@ -108,6 +110,7 @@
                 botao.classList.add("ativo");
             });
         });
+
         // Estoque e preços das variações
         const estoque = <?php echo json_encode(array_column($estoques, 'quantidade', 'id_estoque')); ?>;
         const precos = <?php echo json_encode(array_column($estoques, 'valor_un', 'id_estoque')); ?>;
@@ -117,13 +120,17 @@
 
         let estoqueAtual = Object.keys(estoque)[0]; // Define um estoque inicial
         document.addEventListener('DOMContentLoaded', () => {
-            atualizarPreco(estoqueAtual);
+            atualizarPreco(estoqueAtual, 0);
         });
 
-        function atualizarPreco(id_estoque) {
+        function atualizarPreco(id_estoque, index) {
             const precoElemento = document.getElementById('itemPreco');
             precoElemento.textContent = `R$ ${parseFloat(precos[id_estoque]).toFixed(2)}`;
             estoqueAtual = id_estoque; // Atualiza a variação selecionada
+            
+            // Atualiza a imagem do carrossel
+            carouselInner.style.transform = `translateX(${-index * 100}%)`;
+            
             ajustarQuantidade();
         }
 
@@ -139,7 +146,7 @@
                 quantidadeElemento.value = 1;
             }
 
-            if (quantidadeElemento.value == '' || quantidadeElemento.value == null){
+            if (quantidadeElemento.value == '' || quantidadeElemento.value == null) {
                 quantidadeElemento.value = 1;
             }
         }
@@ -181,6 +188,34 @@
         document.addEventListener('DOMContentLoaded', () => {
             moveSlide(0);
         });
+
+        function adicionarAoCarrinho() {
+            const quantidade = document.getElementById('quantity').value;
+            const idEstoque = estoqueAtual;
+
+            // Criar um formulário dinâmico
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'carrinho@adicionar';
+
+            // Adicionar campos ocultos com os dados
+            const quantidadeInput = document.createElement('input');
+            quantidadeInput.type = 'hidden';
+            quantidadeInput.name = 'quantidade';
+            quantidadeInput.value = quantidade;
+
+            const idEstoqueInput = document.createElement('input');
+            idEstoqueInput.type = 'hidden';
+            idEstoqueInput.name = 'id_estoque';
+            idEstoqueInput.value = idEstoque;
+
+            form.appendChild(quantidadeInput);
+            form.appendChild(idEstoqueInput);
+
+            // Adicionar o formulário ao corpo do documento e enviar
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 
     <script src="produto.js"></script>
