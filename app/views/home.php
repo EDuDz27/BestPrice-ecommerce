@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -82,21 +82,73 @@
     </main>
 
 
-    <!-- Newsletter -->
-    <section class="newsletter">
-        <div class="newsletter-content">
-            <h3>Receba Nossas Ofertas</h3>
-            <p>Cadastre-se para receber promoções exclusivas</p>
-            <form class="newsletter-form">
-                <input type="email" placeholder="Seu melhor e-mail">
-                <button type="submit">Cadastrar</button>
-            </form>
-        </div>
-    </section>
+   <!-- Newsletter -->
+<section class="newsletter">
+  <div class="newsletter-content">
+    <h3>Receba Nossas Ofertas</h3>
+    <p>Cadastre-se para receber promoções exclusivas</p>
+    <form class="newsletter-form" id="newsletterForm">
+      <input type="email" id="emailInput" placeholder="Seu melhor e-mail" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+    <p id="formMessage" style="margin-top: 10px; color: green; display: none;"></p>
+  </div>
+</section>
+
+<!-- Modal com formulário -->
+<div id="newsletterModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Dados cadastrados com sucesso</h3>
+    <i class="bi bi-check-circle-fill"></i>
+  </div>
+</div>
+
 
     <!-- Rodapé -->
     <?php include 'footer.html' ?>
 
 </body>
+<script>
+  const modal = document.getElementById("newsletterModal");
+  const closeBtn = document.querySelector(".close");
+  const form = document.getElementById("newsletterForm");
+  const emailInput = document.getElementById("emailInput");
+  const formMessage = document.getElementById("formMessage");
+
+  // Fechar modal com o botão X
+  closeBtn.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  // Fechar modal clicando fora
+  window.onclick = (event) => {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  // Validação do e-mail e exibição do modal
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (emailRegex.test(email)) {
+      // Esconde mensagem anterior, limpa campo e mostra modal
+      formMessage.style.display = "none";
+      emailInput.value = "";
+
+      modal.style.display = "block";
+    } else {
+      formMessage.textContent = "Por favor, insira um e-mail válido.";
+      formMessage.style.color = "red";
+      formMessage.style.display = "block";
+    }
+  });
+</script>
+
+
 
 </html>
