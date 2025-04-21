@@ -22,20 +22,8 @@ html{
 }
 /* Estilos gerais */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
     background-color: var(--gray-light);
 }
-
-
-/* Ícone do Menu Hamburguer */
-.menu-toggle {
-    font-size: 24px;
-    cursor: pointer;
-    display: none;
-    /* Oculto em telas grandes */
-}
-
 
 
 .container {
@@ -363,12 +351,6 @@ body {
 
 /* Responsividade */
 @media (max-width: 768px) {
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
-    }
-
 
     .banner h2 {
         font-size: 2rem;
