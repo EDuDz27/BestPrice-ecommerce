@@ -28,7 +28,7 @@ header nav ul li {
     padding: 5px 0;
 }
 
-.nav-bar a {
+.nav-bar .nav-links a {
     text-decoration: none;
     color: black;
     margin: 0 15px;
@@ -90,14 +90,22 @@ header nav ul li {
     width:26px;
     transition: 0.5s;
 }
+
+
+.cart-icon {
+    font-size: 19px;
+    color: #000;
+
+}
+
 .cart-icon:hover{
     color: #0a6f3d;
     align-items: center;
     background-color: #0a6f3d;
     border-radius: 50%;
-    color: white;
-    
+    color: #fff;
 }
+
  .user-icon.ativo1{
     align-items: center;
     background-color: #0a6f3d;
@@ -106,10 +114,7 @@ header nav ul li {
     
 }
 
-.cart-icon {
-    font-size: 19px;
 
-}
 
 .cart-count {
     background-color: #0a6f3d;
