@@ -59,6 +59,15 @@
                         <span class="title">Gestão de Estoque</span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="categoria">
+                        <span class="icon">
+                            <ion-icon name="layers-outline"></ion-icon>
+                        </span>
+                        <span class="title">Gestão de Categorias</span>
+                    </a>
+                </li>
                 <li>
                     <a href="#">
                         <span class="icon">
@@ -91,9 +100,11 @@
                     </label>
                 </div>
 
-                <div class="user">
-                    <img src="assets/imgs/customer01.jpg" alt="">
-                </div>
+                <a href="perfil">
+                    <div class="user">
+                        <img src="public/img/person-outline.jpg" alt="">
+                    </div>
+                </a>
             </div>
 
 

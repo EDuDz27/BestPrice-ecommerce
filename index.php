@@ -12,6 +12,8 @@ require __DIR__ . '/app/controllers/EstoqueController.php';
 require __DIR__ . '/app/controllers/AdminController.php';
 require __DIR__ . '/app/controllers/CarrinhoController.php';
 require __DIR__ . '/app/controllers/PagamentoController.php';
+require __DIR__ . '/app/controllers/DashboardController.php';
+require __DIR__ . '/app/controllers/CategoriaController.php';
 
 require __DIR__ . '/router.php';
 
@@ -28,6 +30,7 @@ $router->add('perfil',                  'PerfilController',         'index');
 $router->add('endereco',                'EnderecoController',       'showForm');
 $router->add('endereco@cep',            'EnderecoController',       'buscarCep');
 $router->add('endereco@salvar',         'EnderecoController',       'salvar');
+$router->add('endereco@excluir',        'EnderecoController',       'excluir');
 $router->add('admin',                   'AdminController',          'checkAdminAccess');
 $router->add('estoque',                 'AdminController',          'checkAdminAccess');
 $router->add('adicionar@estoque',       'EstoqueController',        'adicionarEstoque');
@@ -47,7 +50,10 @@ $router->add('carrinho@atualizar',      'CarrinhoController',       'atualizar')
 $router->add('carrinho@remover',        'CarrinhoController',       'remover');
 $router->add('carrinho@finalizar',      'CarrinhoController',       'finalizar');
 $router->add('pagamento',               'PagamentoController',      'index');
-
+$router->add('categoria',               'CategoriaController',      'index');
+$router->add('adicionar@categoria',     'CategoriaController',      'adicionar');  
+$router->add('editar@categoria',        'CategoriaController',      'editar');
+$router->add('excluir@categoria',       'CategoriaController',      'excluir');
 $router->run();
 
 ?>

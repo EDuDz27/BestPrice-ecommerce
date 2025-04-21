@@ -47,4 +47,23 @@ class EnderecoModel
         return false;
     }
 
+    public function excluir($id_endereco)
+    {
+        session_start();
+        $id_user = $_SESSION['user_id'] ?? null;
+
+        if (!$id_user) {
+            return false;
+        }
+
+        // Verifica se o endereço pertence ao usuário antes de excluir
+        $query = "DELETE FROM endereco WHERE id_endereco = :id_endereco AND id_user = :id_user";
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->bindParam(':id_endereco', $id_endereco);
+        $stmt->bindParam(':id_user', $id_user);
+
+        return $stmt->execute();
+    }
+
 }

@@ -67,7 +67,7 @@ class UserModel
         $id_user = $_SESSION['user_id'];
 
         // Query para buscar todas as colunas da tabela endereco usando o id_user
-        $query = "SELECT Rua, Bairro, Cidade, UF, Numero, Complemento FROM endereco WHERE id_user = :id_user";
+        $query = "SELECT id_endereco, Rua, Bairro, Cidade, UF, Numero, Complemento FROM endereco WHERE id_user = :id_user";
 
         // Preparando a query
         $stmt = $this->conn->prepare($query);
@@ -85,12 +85,15 @@ class UserModel
             $enderecosCompletos = [];
 
             foreach ($enderecos as $endereco) {
-                $enderecosCompletos[] = $endereco['Rua'] . ', ' .
-                    $endereco['Bairro'] . ', ' .
-                    'N°' . $endereco['Numero'] . ', ' .
-                    $endereco['Cidade'] . ' - ' .
-                    $endereco['UF'] . ', ' .
-                    (!empty($endereco['Complemento']) ? 'Complemento: ' . $endereco['Complemento'] : '');
+                $enderecosCompletos[] = [
+                    'id_endereco' => $endereco['id_endereco'],
+                    'endereco_formatado' => $endereco['Rua'] . ', ' .
+                        $endereco['Bairro'] . ', ' .
+                        'N°' . $endereco['Numero'] . ', ' .
+                        $endereco['Cidade'] . ' - ' .
+                        $endereco['UF'] . ', ' .
+                        (!empty($endereco['Complemento']) ? 'Complemento: ' . $endereco['Complemento'] : '')
+                ];
             }
 
             return $enderecosCompletos;

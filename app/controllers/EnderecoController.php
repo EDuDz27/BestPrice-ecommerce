@@ -95,8 +95,30 @@ class EnderecoController
                 $erro = "Erro ao salvar endereço.";
                 include 'app/views/endereco_form.php';
             }
+        }
+    }
 
+    public function excluir()
+    {
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: login");
+            exit();
         }
 
+        if (isset($_GET['id'])) {
+            $id_endereco = $_GET['id'];
+            
+            if ($this->enderecoModel->excluir($id_endereco)) {
+                header("Location: perfil");
+                exit();
+            } else {
+                header("Location: perfil?erro=1");
+                exit();
+            }
+        } else {
+            header("Location: perfil?erro=1");
+            exit();
+        }
     }
 }

@@ -11,6 +11,9 @@
 </head>
 
 <body class="carrinho-body">
+
+    <?php include 'header.html'; ?>
+
     <header class="carrinho-header">
         <span>Carrinho de compras do <b>Best Price</b></span>
     </header>
