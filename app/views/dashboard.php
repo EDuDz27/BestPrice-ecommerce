@@ -22,44 +22,44 @@
     ?>
 
     <!-- Cards de Estatísticas -->
-    <div class="cardBox">
-        <div class="card">
+    <div class="db-cardBox">
+        <div class="db-card">
             <div>
-                <div class="numbers">1,504</div>
-                <div class="cardName">Daily Views</div>
+                <div class="db-numbers">1,504</div>
+                <div class="db-cardName">Daily Views</div>
             </div>
 
-            <div class="iconBx">
+            <div class="db-iconBx">
                 <ion-icon name="eye-outline"></ion-icon>
             </div>
         </div>
 
-        <div class="card">
+        <div class="db-card">
             <div>
-                <div class="numbers"><?php echo $vendas; ?></div>
-                <div class="cardName">Total de Vendas</div>
+                <div class="db-numbers"><?php echo $vendas; ?></div>
+                <div class="db-cardName">Total de Vendas</div>
             </div>
 
-            <div class="iconBx">
+            <div class="db-iconBx">
                 <ion-icon name="cart-outline"></ion-icon>
             </div>
         </div>
 
-        <div class="card">
+        <div class="db-card">
             <div>
-                <div class="numbers">R$ <?php echo number_format($ganhos, 2, ',', '.'); ?></div>
-                <div class="cardName">Ganhos Totais</div>
+                <div class="db-numbers">R$ <?php echo number_format($ganhos, 2, ',', '.'); ?></div>
+                <div class="db-cardName">Ganhos Totais</div>
             </div>
-            <div class="iconBx">
+            <div class="db-iconBx">
                 <ion-icon name="cash-outline"></ion-icon>
             </div>
         </div>
     </div>
 
     <!-- Lista de Pedidos Recentes -->
-    <div class="details">
-        <div class="recentOrders">
-            <div class="cardHeader">
+    <div class="db-details">
+        <div class="db-recentOrders">
+            <div class="db-cardHeader">
                 <h2>Pedidos Recentes</h2>
             </div>
 
@@ -79,7 +79,7 @@
                             <td><?php echo htmlspecialchars($pedido['nome_produto']); ?></td>
                             <td><?php echo $pedido['quantidade']; ?></td>
                             <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
-                            <td><span class="status inativo">Inativo</span></td>
+                            <td><span class="db-status inativo">Inativo</span></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

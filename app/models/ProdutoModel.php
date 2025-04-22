@@ -72,6 +72,10 @@ class ProdutoModel
 
     public function listarProdutosComValor()
     {
+
+        $temBusca = isset($_GET['buscar']) && trim($_GET['buscar']) !== '';
+        $busca = $temBusca ? trim($_GET['buscar']) : '';
+
         $sql = "
             SELECT p.id_produto, p.nome, p.descricao, p.foto, e.valor_un
             FROM produto p
@@ -80,7 +84,18 @@ class ProdutoModel
                             GROUP BY id_produto
                         ) e ON p.id_produto = e.id_produto ";
 
+        // Adiciona cláusula WHERE se houver busca
+        if ($temBusca) {
+            $sql .= " WHERE p.nome LIKE :nome";
+        }
+
         $stmt = $this->conn->prepare($sql);
+
+        // Faz o bind do parâmetro, se necessário
+        if ($temBusca) {
+            $stmt->bindValue(':nome', '%' . $busca . '%', PDO::PARAM_STR);
+        }
+
         $stmt->execute();
 
         $produtos = [];
@@ -117,19 +132,20 @@ class ProdutoModel
         $stmt->execute();
 
         $produto = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         return $produto;
     }
 
-    public function buscarEstoquePorProduto($id) {
+    public function buscarEstoquePorProduto($id)
+    {
         $sql = "SELECT id_estoque, nome, foto, quantidade, valor_un, descricao FROM estoque WHERE id_produto = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $estoques =[];
+        $estoques = [];
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $estoques[] = $row;
         }
 

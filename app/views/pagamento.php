@@ -9,7 +9,7 @@
     <title>Tela Pagamento</title>
 </head>
 <body>
-    <form class="formulario">
+    <form class="formulario" action="carrinho@finalizar" method="POST">
         <div class="container">
             <div class="titulo"></div>
             <h1><b>Cartão</b></h1>
@@ -79,7 +79,7 @@
             <label><input type="radio" name="payment" value="cod" checked> Dinheiro na Entrega</label>
 
             <div class="botao">
-                <button id="applyCoupon">Comprar</button>
+                <button type="submit" id="applyCoupon">Comprar</button>
             </div>
         </div>
     </form>
@@ -91,6 +91,37 @@
         </div>
     </div>
     
-    <script src="public/js/pagamento.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.formulario');
+            const popup = document.getElementById('popup-sucesso');
+            const fecharPopup = document.getElementById('fechar-popup');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                fetch('carrinho@finalizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        popup.style.display = 'flex';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+            });
+
+            fecharPopup.addEventListener('click', function() {
+                popup.style.display = 'none';
+                window.location.href = 'carrinho';
+            });
+        });
+    </script>
 </body>
 </html>

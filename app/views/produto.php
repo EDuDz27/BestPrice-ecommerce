@@ -66,7 +66,7 @@
                 </div>
                 <div class="botoes">
                     <button class="bt-carrinho" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
-                    <button class="buy">Comprar</button>
+                    <button class="buy" onclick="adicionarAoCarrinho()">Comprar</button>
                 </div>
                 <div class="extra-infos">
                     <div class="frete-gratis">

@@ -112,12 +112,12 @@ class CarrinhoController
         }
 
         if ($this->carrinhoModel->finalizarPedidos($_SESSION['user_id'])) {
-            $_SESSION['sucesso'] = "Pedido finalizado com sucesso!";
-            header('Location: home');
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Pedido finalizado com sucesso!']);
             exit;
         } else {
-            $_SESSION['erro'] = "Erro ao finalizar pedido";
-            header('Location: carrinho');
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Erro ao finalizar pedido']);
             exit;
         }
     }

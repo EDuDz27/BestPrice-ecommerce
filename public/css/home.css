@@ -196,6 +196,7 @@ body {
 
 .product-info h3 {
     font-size: 1.2rem;
+    height: 3rem;
     color: #333;
     margin-bottom: 0.5rem;
 }
@@ -222,6 +223,7 @@ body {
 .installments {
     color: var(--gray);
     font-size: 0.9rem;
+    height: 3.2rem;
     margin-bottom: 1rem;
 }
 
