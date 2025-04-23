@@ -106,6 +106,14 @@ header nav ul li {
     color: #fff;
 }
 
+.user-icon:hover{
+    color: #0a6f3d;
+    align-items: center;
+    background-color: #0a6f3d;
+    border-radius: 50%;
+    color: #fff;
+}
+
  .user-icon.ativo1{
     align-items: center;
     background-color: #0a6f3d;
