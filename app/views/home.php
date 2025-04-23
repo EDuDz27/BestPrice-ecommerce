@@ -28,22 +28,11 @@
 
     <!-- Categorias -->
     <div class="categories">
-        <div class="category">
-            <i class="fas fa-mobile-alt"></i>
-            <span>Smartphones</span>
-        </div>
-        <div class="category">
-            <i class="fas fa-laptop"></i>
-            <span>Notebooks</span>
-        </div>
-        <div class="category">
-            <i class="fas fa-headphones"></i>
-            <span>Áudio</span>
-        </div>
-        <div class="category">
-            <i class="fas fa-tv"></i>
-            <span>TVs</span>
-        </div>
+        <?php foreach ($categorias as $categoria): ?>
+            <a href="?categoria=<?= $categoria['id_categoria'] ?>#products" class="category">
+                <span><?= htmlspecialchars($categoria['nome']) ?></span>
+            </a>
+        <?php endforeach; ?>
     </div>
 
 

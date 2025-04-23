@@ -108,6 +108,7 @@ body {
     padding: 1.5rem;
     border-radius: 10px;
     text-align: center;
+    text-decoration: none;
     box-shadow: var(--shadow);
     flex: 1;
     cursor: pointer;

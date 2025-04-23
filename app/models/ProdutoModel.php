@@ -76,6 +76,10 @@ class ProdutoModel
         $temBusca = isset($_GET['buscar']) && trim($_GET['buscar']) !== '';
         $busca = $temBusca ? trim($_GET['buscar']) : '';
 
+
+        $temCategoria = isset($_GET['categoria']) && trim($_GET['categoria']) !== '';
+        $categoria = $temCategoria ? (int)$_GET['categoria'] : null;
+
         $sql = "
             SELECT p.id_produto, p.nome, p.descricao, p.foto, e.valor_un
             FROM produto p
@@ -84,16 +88,30 @@ class ProdutoModel
                             GROUP BY id_produto
                         ) e ON p.id_produto = e.id_produto ";
 
-        // Adiciona cláusula WHERE se houver busca
+        $stmt = $this->conn->prepare($sql);
+
+        $whereClauses = [];
+
         if ($temBusca) {
-            $sql .= " WHERE p.nome LIKE :nome";
+            $whereClauses[] = "p.nome LIKE :nome";
+        }
+
+        if ($temCategoria) {
+            $whereClauses[] = "p.id_categoria = :categoria";
+        }
+
+        if (!empty($whereClauses)) {
+            $sql .= " WHERE " . implode(' AND ', $whereClauses);
         }
 
         $stmt = $this->conn->prepare($sql);
 
-        // Faz o bind do parâmetro, se necessário
         if ($temBusca) {
             $stmt->bindValue(':nome', '%' . $busca . '%', PDO::PARAM_STR);
+        }
+
+        if ($temCategoria) {
+            $stmt->bindValue(':categoria', $categoria, PDO::PARAM_INT);
         }
 
         $stmt->execute();
