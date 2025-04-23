@@ -42,7 +42,8 @@ class CarrinhoModel
     public function listarCarrinho($id_user)
     {
         $sql = "SELECT p.id_pedido, p.quantidade, p.valor_total, 
-                       e.nome, e.valor_un, e.foto, e.quantidade as quantidade_estoque
+                       e.nome, e.valor_un, e.foto, e.quantidade as quantidade_estoque,
+                       e.descricao
                 FROM pedido p 
                 JOIN estoque e ON p.id_estoque = e.id_estoque 
                 WHERE p.id_user = :id_user AND p.status = 'ativo'";

@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th>Produto</th>
+                            <th>Descrição</th>
                             <th>Preço</th>
                             <th>Quantidade</th>
                             <th>Total</th>
@@ -45,6 +46,7 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td><?= htmlspecialchars($item['descricao']) ?></td>
                                     <td>R$ <?= number_format($item['valor_un'], 2, ',', '.') ?></td>
                                     <td>
                                         <div class="qty">
