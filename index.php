@@ -14,6 +14,8 @@ require __DIR__ . '/app/controllers/CarrinhoController.php';
 require __DIR__ . '/app/controllers/PagamentoController.php';
 require __DIR__ . '/app/controllers/DashboardController.php';
 require __DIR__ . '/app/controllers/CategoriaController.php';
+require __DIR__ . '/app/controllers/FreteController.php';
+
 
 require __DIR__ . '/router.php';
 
@@ -49,6 +51,7 @@ $router->add('carrinho@adicionar',      'CarrinhoController',       'adicionar')
 $router->add('carrinho@atualizar',      'CarrinhoController',       'atualizar');
 $router->add('carrinho@remover',        'CarrinhoController',       'remover');
 $router->add('carrinho@finalizar',      'CarrinhoController',       'finalizar');
+$router->add('frete@calcular', 'FreteController', 'calcular');
 $router->add('pagamento',               'PagamentoController',      'index');
 $router->add('categoria',               'CategoriaController',      'index');
 $router->add('adicionar@categoria',     'CategoriaController',      'adicionar');  
