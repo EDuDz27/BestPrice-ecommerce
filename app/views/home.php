@@ -28,8 +28,13 @@
 
     <!-- Categorias -->
     <div class="categories">
-        <?php foreach ($categorias as $categoria): ?>
-            <a href="?categoria=<?= $categoria['id_categoria'] ?>#products" class="category">
+        <?php 
+        $categoriaAtual = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+        foreach ($categorias as $categoria): 
+            $isActive = ($categoriaAtual == $categoria['id_categoria']);
+            $href = $isActive ? '?' : '?categoria=' . $categoria['id_categoria'] . '#products';
+        ?>
+            <a href="<?= $href ?>" class="category <?= $isActive ? 'active' : '' ?>">
                 <span><?= htmlspecialchars($categoria['nome']) ?></span>
             </a>
         <?php endforeach; ?>

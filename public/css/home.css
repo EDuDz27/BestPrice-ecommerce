@@ -112,7 +112,11 @@ body {
     box-shadow: var(--shadow);
     flex: 1;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.category.active {
+    background-color: #def3e0;
 }
 
 
@@ -147,7 +151,7 @@ body {
     margin: 0 auto;
     padding: 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     text-align: center;
 }
@@ -353,6 +357,12 @@ body {
 
 
 /* Responsividade */
+@media (max-width: 1200px) {
+    .products {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
 
     .banner h2 {
@@ -371,5 +381,9 @@ body {
 
     .newsletter-form {
         flex-direction: column;
+    }
+
+    .products {
+        grid-template-columns: 1fr;
     }
 }

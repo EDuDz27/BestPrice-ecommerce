@@ -72,10 +72,18 @@ class CadastroController
 
             // Salva o usuário
             if ($this->cadastroModel->salvar()) {
-                echo "Cadastro realizado com sucesso!";
+                echo "<script>
+                    if (confirm('Cadastro realizado com sucesso! Clique em OK para ir para a tela de login.')) {
+                        window.location.href = 'login';
+                    } else {
+                        window.location.href = 'cadastro';
+                    }
+                </script>";
             } else {
-                echo "Erro ao cadastrar o usuário!";
+                echo "<script>alert('Erro ao cadastrar o usuário!');</script>";
+                header("Location: cadastro");
             }
+
         } else {
             $this->index();
         }
