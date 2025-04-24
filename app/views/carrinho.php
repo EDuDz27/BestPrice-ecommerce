@@ -25,7 +25,6 @@
                     <thead>
                         <tr>
                             <th>Produto</th>
-                            <th>Descrição</th>
                             <th>Preço</th>
                             <th>Quantidade</th>
                             <th>Total</th>
@@ -46,7 +45,6 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td><?= htmlspecialchars($item['descricao']) ?></td>
                                     <td>R$ <?= number_format($item['valor_un'], 2, ',', '.') ?></td>
                                     <td>
                                         <div class="qty">
@@ -86,13 +84,26 @@
                             <span class="subtotal">R$
                                 <?= number_format(array_sum(array_column($itens, 'valor_total')), 2, ',', '.') ?></span>
                         </div>
-                        <div><span>Frete</span><span>Gratuito</span></div>
+                        <div>
+                            <span>Frete</span>
+                            <span id="valorFrete">R$ 0,00</span>
+                        </div>
                         <div>
                             <button class="carrinho-button">
                                 Adicionar cupom de desconto
                                 <i class="bx bx-right-arrow-alt"></i>
                             </button>
                         </div>
+                    </div>
+                    <div>
+
+                        <h2>Calcular Frete</h2>
+                        <label for="cep">Digite o CEP de destino:</label><br>
+                        <input type="text" id="cep" placeholder="Apenas números (Ex: 01001000)" maxlength="8" pattern="\d{8}" required><br>
+                        <button onclick="calcularFrete()">Calcular Frete</button>
+
+                        <div id="loading" style="display: none;">Calculando...</div>
+                        <div id="resultado"></div>
                     </div>
                     <footer>
                         <span>Total</span>
@@ -134,10 +145,10 @@
         }
 
         // Adiciona event listeners para todos os inputs de quantidade
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const quantityInputs = document.querySelectorAll('.quantity');
             quantityInputs.forEach(input => {
-                input.addEventListener('input', function () {
+                input.addEventListener('input', function() {
                     const max = parseInt(this.dataset.max);
                     let value = parseInt(this.value);
 
@@ -171,12 +182,12 @@
             if (quantidade > max) quantidade = max;
 
             fetch('carrinho@atualizar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `id_pedido=${id_pedido}&quantidade=${quantidade}`
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `id_pedido=${id_pedido}&quantidade=${quantidade}`
+                })
                 .then(response => response.json())
                 .then(data => {
                     if (!data.success) {
@@ -211,8 +222,8 @@
         function removeItem(id_pedido) {
             if (confirm('Deseja realmente remover este item do carrinho?')) {
                 fetch(`carrinho@remover?id=${id_pedido}`, {
-                    method: 'GET'
-                })
+                        method: 'GET'
+                    })
                     .then(response => {
                         if (response.ok) {
                             window.location.reload();
@@ -224,10 +235,163 @@
         }
 
         function finalizarCompra() {
+            
             if (confirm('Deseja prosseguir para o pagamento?')) {
                 window.location.href = 'pagamento';
             }
+            
         }
+        
+        let valorFrete = 0; // Variável global para armazenar o valor do frete
+        let freteSelecionado = null; // Armazena o serviço de frete escolhido
+
+        async function calcularFrete() {
+            const cepDestinoInput = document.getElementById('cep');
+            const cepDestino = cepDestinoInput.value.replace(/\D/g, ''); // Remove não-dígitos
+            const resultadoDiv = document.getElementById('resultado');
+            const loadingDiv = document.getElementById('loading');
+
+            resultadoDiv.innerHTML = ''; // Limpa resultados anteriores
+            resultadoDiv.classList.remove('error');
+
+            // Validação básica no lado do Cliente (JavaScript)
+            if (cepDestino.length !== 8) {
+                resultadoDiv.innerHTML = '<p class="error">Por favor, digite um CEP válido com 8 dígitos.</p>';
+                resultadoDiv.classList.add('error');
+                return; // Para a execução
+            }
+
+            loadingDiv.style.display = 'block'; // Mostra "Calculando..."
+
+            try {
+                const response = await fetch('frete@calcular', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cep: cepDestino
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                if (data.ShippingSevicesArray && data.ShippingSevicesArray.length > 0) {
+                    let hasValidService = false;
+                    let freteOptionsHtml = '<select id="freteSelect">'; // Inicia o select de frete
+
+                    // Exibe os serviços de frete disponíveis para o usuário escolher
+                    data.ShippingSevicesArray.forEach(servico => {
+                        if (!servico.Error && servico.ShippingPrice != null) {
+                            const deliveryTime = servico.DeliveryTime || '?'; // Estimativa de dias de entrega
+
+                            freteOptionsHtml += `<option value="${servico.ServiceCode}" data-preco="${servico.ShippingPrice}" data-entrega="${deliveryTime}">
+                        ${servico.ServiceDescription || 'Serviço Desconhecido'} - R$ ${parseFloat(servico.ShippingPrice).toFixed(2).replace('.', ',')} 
+                        (Entrega em ${deliveryTime} dia(s))
+                    </option>`;
+                            hasValidService = true;
+                        }
+                    });
+
+                    freteOptionsHtml += '</select>';
+
+                    if (hasValidService) {
+                        resultadoDiv.innerHTML = `
+                    <p><strong>Escolha o tipo de frete:</strong></p>
+                    ${freteOptionsHtml}
+                    <p>Frete selecionado: <span id="freteSelecionado"></span></p>
+                    <p>Estimativa de entrega: <span id="entregaEstimativa"></span></p>
+                `;
+
+                        // Adiciona um evento de alteração para o select
+                    
+document.getElementById('freteSelect').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    freteSelecionado = selectedOption.value;
+    valorFrete = parseFloat(selectedOption.getAttribute('data-preco'));
+    const entregaEstimativa = selectedOption.getAttribute('data-entrega');
+    const freteServico = selectedOption.text;  // Usando o nome do serviço como descrição
+
+    // Exibe o frete selecionado e a estimativa de entrega
+    document.getElementById('freteSelecionado').textContent = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+    document.getElementById('entregaEstimativa').textContent = `${entregaEstimativa} dia(s)`;
+
+    // Atualiza o total com o frete
+    atualizarTotalComFrete();
+
+    // Salva as informações no localStorage
+    localStorage.setItem('valorFrete', valorFrete.toFixed(2)); // Atualiza o valor do frete
+    localStorage.setItem('frete_estimativa', entregaEstimativa); // Atualiza a estimativa de entrega
+    localStorage.setItem('frete_servico', freteServico); // Atualiza o serviço de frete
+});
+
+;
+                    } else {
+                        resultadoDiv.innerHTML = '<p class="error">Nenhum serviço de entrega válido encontrado para o CEP informado.</p>';
+                        resultadoDiv.classList.add('error');
+                    }
+
+                } else if (data.erro) {
+                    resultadoDiv.innerHTML = `<p class="error">${data.erro}</p>`;
+                    resultadoDiv.classList.add('error');
+                } else {
+                    resultadoDiv.innerHTML = '<p class="error">Nenhum serviço disponível retornado pela API para o CEP informado.</p>';
+                    resultadoDiv.classList.add('error');
+                }
+
+            } catch (err) {
+                console.error("Erro ao calcular frete:", err);
+                resultadoDiv.innerHTML = `<p class="error">Erro ao calcular frete: ${err.message}</p>`;
+                resultadoDiv.classList.add('error');
+            } finally {
+                loadingDiv.style.display = 'none'; // Esconde "Calculando..." independente de sucesso/erro
+            }
+        }
+
+        function atualizarTotalComFrete() {
+            const subtotalElement = document.querySelector('.subtotal');
+            const totalGeralElement = document.querySelector('.total-geral');
+            
+
+            if (!subtotalElement || !totalGeralElement) {
+                console.error("Elemento '.subtotal' ou '.total-geral' não encontrado.");
+                if (totalGeralElement) totalGeralElement.textContent = "R$ Erro";
+                return;
+            }
+
+            const subtotalTextoRaw = subtotalElement.textContent;
+
+            let subtotalTextoLimpo = subtotalTextoRaw.replace('R$', '').trim();
+            subtotalTextoLimpo = subtotalTextoLimpo.replace(/\./g, '');
+            subtotalTextoLimpo = subtotalTextoLimpo.replace(',', '.');
+            const subtotal = parseFloat(subtotalTextoLimpo);
+
+            const frete = (typeof valorFrete === 'number' && !isNaN(valorFrete)) ? valorFrete : 0;
+
+            if (isNaN(subtotal)) {
+                console.error('Falha ao converter subtotal para número:', subtotalTextoRaw, '->', subtotalTextoLimpo);
+                totalGeralElement.textContent = 'R$ NaN';
+                return;
+            }
+
+            const totalGeral = subtotal + frete;
+
+totalGeralElement.textContent = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+
+// Atualiza o valor exibido do frete no resumo
+const valorFreteSpan = document.getElementById('valorFrete');
+if (valorFreteSpan) {
+    valorFreteSpan.textContent = `R$ ${frete.toFixed(2).replace('.', ',')}`;
+}}
+
+
+
+
     </script>
 </body>
 
