@@ -64,11 +64,11 @@
             <?php endif; ?>
 
             <div class="pag">
-                <p>Subtotal: <strong>R$ <?= number_format(array_sum(array_column($itens, 'valor_total')), 2, ',', '.') ?></strong></p>
+                <p>Subtotal: <strong id="subtotal">R$ <?= number_format(array_sum(array_column($itens, 'valor_total')), 2, ',', '.') ?></strong></p>
                 <hr>
-                <p>Frete: <strong>Grátis</strong></p>
+                <p>Frete: <strong id="frete">A calcular</strong></p>
                 <hr>
-                <p>Total: <strong>R$ <?= number_format(array_sum(array_column($itens, 'valor_total')), 2, ',', '.') ?></strong></p>
+                <p>Total: <strong id="total">R$ <?= number_format(array_sum(array_column($itens, 'valor_total')), 2, ',', '.') ?></strong></p>
             </div>
 
             <div class="banco">
@@ -92,36 +92,55 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('.formulario');
-            const popup = document.getElementById('popup-sucesso');
-            const fecharPopup = document.getElementById('fechar-popup');
+     document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.formulario');
+    const popup = document.getElementById('popup-sucesso');
+    const fecharPopup = document.getElementById('fechar-popup');
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                fetch('carrinho@finalizar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        popup.style.display = 'flex';
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                });
-            });
+    // Pega o valor do frete do localStorage
+    let valorFrete = parseFloat(localStorage.getItem('valorFrete')) || 0; // Se não houver valor, assume 0
+    console.log('Valor do frete:', valorFrete); // Para depuração
 
-            fecharPopup.addEventListener('click', function() {
-                popup.style.display = 'none';
-                window.location.href = 'carrinho';
-            });
+    // Função para atualizar os valores na página
+    function atualizarValores() {
+        // Pega o subtotal, que já foi calculado pelo PHP e mostrado na página
+        let subtotal = parseFloat(document.getElementById('subtotal').innerText.replace('R$ ', '').replace(',', '.'));
+
+        // Atualiza o valor do frete e o total
+        document.getElementById('frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+        document.getElementById('total').innerText = `R$ ${(subtotal + valorFrete).toFixed(2).replace('.', ',')}`;
+    }
+
+    // Chama a função para atualizar os valores ao carregar a página
+    atualizarValores();
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        fetch('carrinho@finalizar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                popup.style.display = 'flex';
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
         });
+    });
+
+    fecharPopup.addEventListener('click', function() {
+        popup.style.display = 'none';
+        window.location.href = 'carrinho';
+    });
+});
+
     </script>
+
 </body>
 </html>
