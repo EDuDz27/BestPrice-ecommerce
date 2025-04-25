@@ -129,32 +129,48 @@
     </main>
 
     <script>
+        
         // Função para formatar valores monetários
-        function formatarValor(valor) {
-            return valor.toFixed(2).replace('.', ',');
-        }
+        // Função para formatar valores monetários
+function formatarValor(valor) {
+    // Converte para número se for string
+    if (typeof valor === 'string') {
+        valor = parseFloat(valor.replace('R$', '').replace(/\./g, '').replace(',', '.'));
+    }
+    
+    // Formata para o padrão brasileiro
+    return valor.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
 
         // Função para calcular e atualizar totais
-        function atualizarTotais() {
-            let subtotal = 0;
+       // Função para calcular e atualizar totais
+function atualizarTotais() {
+    let subtotal = 0;
 
-            // Calcula o total de cada item e o subtotal geral
-            document.querySelectorAll('tbody tr').forEach(row => {
-                const input = row.querySelector('.quantity');
-                const precoUnitario = parseFloat(input.dataset.preco);
-                const quantidade = parseInt(input.value);
-                const totalItem = precoUnitario * quantidade;
+    // Calcula o total de cada item e o subtotal geral
+    document.querySelectorAll('tbody tr').forEach(row => {
+        const input = row.querySelector('.quantity');
+        const precoUnitario = parseFloat(input.dataset.preco);
+        const quantidade = parseInt(input.value);
+        const totalItem = precoUnitario * quantidade;
 
-                // Atualiza o total do item
-                row.querySelector('.total-item').textContent = `R$ ${formatarValor(totalItem)}`;
+        // Atualiza o total do item
+        row.querySelector('.total-item').textContent = `R$ ${formatarValor(totalItem)}`;
 
-                subtotal += totalItem;
-            });
+        subtotal += totalItem;
+    });
 
-            // Atualiza o subtotal e total geral
-            document.querySelector('.subtotal').textContent = `R$ ${formatarValor(subtotal)}`;
-            document.querySelector('.total-geral').textContent = `R$ ${formatarValor(subtotal)}`;
-        }
+    // Atualiza o subtotal
+    document.querySelector('.subtotal').textContent = `R$ ${formatarValor(subtotal)}`;
+    
+    // Atualiza o total geral considerando o frete
+    const frete = parseFloat(localStorage.getItem('valorFrete')) || 0;
+    const totalGeral = subtotal + frete;
+    document.querySelector('.total-geral').textContent = `R$ ${formatarValor(totalGeral)}`;
+}
 
         // Adiciona event listeners para todos os inputs de quantidade
         document.addEventListener('DOMContentLoaded', function() {
@@ -404,7 +420,18 @@ if (valorFreteSpan) {
 }}
 
 
-
+document.addEventListener('DOMContentLoaded', function() {
+    // Atualiza os totais quando a página carrega
+    atualizarTotais();
+    
+    // Restante do código existente...
+    const quantityInputs = document.querySelectorAll('.quantity');
+    quantityInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Código existente...
+        });
+    });
+});
 
     </script>
 </body>
