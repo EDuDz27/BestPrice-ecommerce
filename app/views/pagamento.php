@@ -92,28 +92,42 @@
     </div>
     
     <script>
-     document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.formulario');
     const popup = document.getElementById('popup-sucesso');
     const fecharPopup = document.getElementById('fechar-popup');
 
+    // Função para converter valor brasileiro para número
+    function brlToNumber(brlValue) {
+        return parseFloat(brlValue.replace('R$ ', '').replace(/\./g, '').replace(',', '.'));
+    }
+
+    // Função para formatar número para formato brasileiro
+    function numberToBrl(num) {
+        return 'R$ ' + num.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+    }
+
     // Pega o valor do frete do localStorage
-    let valorFrete = parseFloat(localStorage.getItem('valorFrete')) || 0; // Se não houver valor, assume 0
-    console.log('Valor do frete:', valorFrete); // Para depuração
+    let valorFrete = parseFloat(localStorage.getItem('valorFrete')) || 0;
 
     // Função para atualizar os valores na página
     function atualizarValores() {
-        // Pega o subtotal, que já foi calculado pelo PHP e mostrado na página
-        let subtotal = parseFloat(document.getElementById('subtotal').innerText.replace('R$ ', '').replace(',', '.'));
-
-        // Atualiza o valor do frete e o total
-        document.getElementById('frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
-        document.getElementById('total').innerText = `R$ ${(subtotal + valorFrete).toFixed(2).replace('.', ',')}`;
+        // Pega o subtotal do elemento HTML e converte para número
+        let subtotalElement = document.getElementById('subtotal');
+        let subtotal = brlToNumber(subtotalElement.innerText);
+        
+        // Calcula o total
+        let total = subtotal + valorFrete;
+        
+        // Atualiza os elementos na página
+        document.getElementById('frete').innerText = numberToBrl(valorFrete);
+        document.getElementById('total').innerText = numberToBrl(total);
     }
 
     // Chama a função para atualizar os valores ao carregar a página
     atualizarValores();
 
+    // Restante do código permanece o mesmo
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
