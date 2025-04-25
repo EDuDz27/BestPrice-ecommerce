@@ -96,10 +96,19 @@
                         </div>
                     </div>
                     <div>
-
                         <h2>Calcular Frete</h2>
-                        <label for="cep">Digite o CEP de destino:</label><br>
-                        <input type="text" id="cep" placeholder="Apenas números (Ex: 01001000)" maxlength="8" pattern="\d{8}" required><br>
+                        <label for="endereco">Selecione o endereço de entrega:</label><br>
+                        <select id="endereco" name="endereco" required>
+                            <?php if (!empty($enderecos)): ?>
+                                <?php foreach ($enderecos as $endereco): ?>
+                                    <option value="<?= $endereco['id_endereco'] ?>" data-cep="<?= $endereco['cep'] ?>">
+                                        <?= htmlspecialchars($endereco['endereco_formatado']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">Nenhum endereço cadastrado</option>
+                            <?php endif; ?>
+                        </select>
                         <button onclick="calcularFrete()">Calcular Frete</button>
 
                         <div id="loading" style="display: none;">Calculando...</div>
@@ -235,33 +244,32 @@
         }
 
         function finalizarCompra() {
-            
+
             if (confirm('Deseja prosseguir para o pagamento?')) {
                 window.location.href = 'pagamento';
             }
-            
+
         }
-        
+
         let valorFrete = 0; // Variável global para armazenar o valor do frete
         let freteSelecionado = null; // Armazena o serviço de frete escolhido
 
         async function calcularFrete() {
-            const cepDestinoInput = document.getElementById('cep');
-            const cepDestino = cepDestinoInput.value.replace(/\D/g, ''); // Remove não-dígitos
+            const enderecoSelect = document.getElementById('endereco');
+            const cepDestino = enderecoSelect.options[enderecoSelect.selectedIndex].getAttribute('data-cep');
             const resultadoDiv = document.getElementById('resultado');
             const loadingDiv = document.getElementById('loading');
 
             resultadoDiv.innerHTML = ''; // Limpa resultados anteriores
             resultadoDiv.classList.remove('error');
 
-            // Validação básica no lado do Cliente (JavaScript)
-            if (cepDestino.length !== 8) {
-                resultadoDiv.innerHTML = '<p class="error">Por favor, digite um CEP válido com 8 dígitos.</p>';
+            if (!cepDestino) {
+                resultadoDiv.innerHTML = '<p class="error">Por favor, selecione um endereço válido.</p>';
                 resultadoDiv.classList.add('error');
-                return; // Para a execução
+                return;
             }
 
-            loadingDiv.style.display = 'block'; // Mostra "Calculando..."
+            loadingDiv.style.display = 'block';
 
             try {
                 const response = await fetch('frete@calcular', {
@@ -291,9 +299,9 @@
                             const deliveryTime = servico.DeliveryTime || '?'; // Estimativa de dias de entrega
 
                             freteOptionsHtml += `<option value="${servico.ServiceCode}" data-preco="${servico.ShippingPrice}" data-entrega="${deliveryTime}">
-                        ${servico.ServiceDescription || 'Serviço Desconhecido'} - R$ ${parseFloat(servico.ShippingPrice).toFixed(2).replace('.', ',')} 
-                        (Entrega em ${deliveryTime} dia(s))
-                    </option>`;
+                                ${servico.ServiceDescription || 'Serviço Desconhecido'} - R$ ${parseFloat(servico.ShippingPrice).toFixed(2).replace('.', ',')} 
+                                (Entrega em ${deliveryTime} dia(s))
+                            </option>`;
                             hasValidService = true;
                         }
                     });
@@ -302,40 +310,39 @@
 
                     if (hasValidService) {
                         resultadoDiv.innerHTML = `
-                    <p><strong>Escolha o tipo de frete:</strong></p>
-                    ${freteOptionsHtml}
-                    <p>Frete selecionado: <span id="freteSelecionado"></span></p>
-                    <p>Estimativa de entrega: <span id="entregaEstimativa"></span></p>
-                `;
+                            <p><strong>Escolha o tipo de frete:</strong></p>
+                            ${freteOptionsHtml}
+                            <p>Frete selecionado: <span id="freteSelecionado"></span></p>
+                            <p>Estimativa de entrega: <span id="entregaEstimativa"></span></p>
+                        `;
 
                         // Adiciona um evento de alteração para o select
-                    
-document.getElementById('freteSelect').addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    freteSelecionado = selectedOption.value;
-    valorFrete = parseFloat(selectedOption.getAttribute('data-preco'));
-    const entregaEstimativa = selectedOption.getAttribute('data-entrega');
-    const freteServico = selectedOption.text;  // Usando o nome do serviço como descrição
 
-    // Exibe o frete selecionado e a estimativa de entrega
-    document.getElementById('freteSelecionado').textContent = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
-    document.getElementById('entregaEstimativa').textContent = `${entregaEstimativa} dia(s)`;
+                        document.getElementById('freteSelect').addEventListener('change', function() {
+                            const selectedOption = this.options[this.selectedIndex];
+                            freteSelecionado = selectedOption.value;
+                            valorFrete = parseFloat(selectedOption.getAttribute('data-preco'));
+                            const entregaEstimativa = selectedOption.getAttribute('data-entrega');
+                            const freteServico = selectedOption.text; // Usando o nome do serviço como descrição
 
-    // Atualiza o total com o frete
-    atualizarTotalComFrete();
+                            // Exibe o frete selecionado e a estimativa de entrega
+                            document.getElementById('freteSelecionado').textContent = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+                            document.getElementById('entregaEstimativa').textContent = `${entregaEstimativa} dia(s)`;
 
-    // Salva as informações no localStorage
-    localStorage.setItem('valorFrete', valorFrete.toFixed(2)); // Atualiza o valor do frete
-    localStorage.setItem('frete_estimativa', entregaEstimativa); // Atualiza a estimativa de entrega
-    localStorage.setItem('frete_servico', freteServico); // Atualiza o serviço de frete
-});
+                            // Atualiza o total com o frete
+                            atualizarTotalComFrete();
 
-;
+                            // Salva as informações no localStorage
+                            localStorage.setItem('valorFrete', valorFrete.toFixed(2)); // Atualiza o valor do frete
+                            localStorage.setItem('frete_estimativa', entregaEstimativa); // Atualiza a estimativa de entrega
+                            localStorage.setItem('frete_servico', freteServico); // Atualiza o serviço de frete
+                        });
+
+                        ;
                     } else {
                         resultadoDiv.innerHTML = '<p class="error">Nenhum serviço de entrega válido encontrado para o CEP informado.</p>';
                         resultadoDiv.classList.add('error');
                     }
-
                 } else if (data.erro) {
                     resultadoDiv.innerHTML = `<p class="error">${data.erro}</p>`;
                     resultadoDiv.classList.add('error');
@@ -343,20 +350,19 @@ document.getElementById('freteSelect').addEventListener('change', function() {
                     resultadoDiv.innerHTML = '<p class="error">Nenhum serviço disponível retornado pela API para o CEP informado.</p>';
                     resultadoDiv.classList.add('error');
                 }
-
             } catch (err) {
                 console.error("Erro ao calcular frete:", err);
                 resultadoDiv.innerHTML = `<p class="error">Erro ao calcular frete: ${err.message}</p>`;
                 resultadoDiv.classList.add('error');
             } finally {
-                loadingDiv.style.display = 'none'; // Esconde "Calculando..." independente de sucesso/erro
+                loadingDiv.style.display = 'none';
             }
         }
 
         function atualizarTotalComFrete() {
             const subtotalElement = document.querySelector('.subtotal');
             const totalGeralElement = document.querySelector('.total-geral');
-            
+
 
             if (!subtotalElement || !totalGeralElement) {
                 console.error("Elemento '.subtotal' ou '.total-geral' não encontrado.");
@@ -381,17 +387,14 @@ document.getElementById('freteSelect').addEventListener('change', function() {
 
             const totalGeral = subtotal + frete;
 
-totalGeralElement.textContent = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+            totalGeralElement.textContent = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 
-// Atualiza o valor exibido do frete no resumo
-const valorFreteSpan = document.getElementById('valorFrete');
-if (valorFreteSpan) {
-    valorFreteSpan.textContent = `R$ ${frete.toFixed(2).replace('.', ',')}`;
-}}
-
-
-
-
+            // Atualiza o valor exibido do frete no resumo
+            const valorFreteSpan = document.getElementById('valorFrete');
+            if (valorFreteSpan) {
+                valorFreteSpan.textContent = `R$ ${frete.toFixed(2).replace('.', ',')}`;
+            }
+        }
     </script>
 </body>
 

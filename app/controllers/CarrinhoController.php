@@ -2,14 +2,16 @@
 
 require_once 'config/database.php';
 require_once 'app/models/CarrinhoModel.php';
+require_once 'app/models/UserModel.php';
 
 class CarrinhoController
 {
     private $carrinhoModel;
-
+    private $userModel;
     public function __construct()
     {
         $this->carrinhoModel = new CarrinhoModel();
+        $this->userModel = new UserModel();
     }
 
     public function verificaSessao()
@@ -33,6 +35,7 @@ class CarrinhoController
         }
 
         $itens = $this->carrinhoModel->listarCarrinho($_SESSION['user_id']);
+        $enderecos = $this->userModel->buscaEnderecos($_SESSION['user_id']);
         include 'app/views/carrinho.php';
     }
 
