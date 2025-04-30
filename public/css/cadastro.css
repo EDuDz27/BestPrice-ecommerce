@@ -191,6 +191,7 @@ footer {
     }
     .form-container {
         width: 100%;
+        height: 60vh;
     }
     .form-box {
         text-align: center;
@@ -204,18 +205,17 @@ footer {
     .form-box button {
         width: 100%;
     }
-    .google-btn {
-        width: 100%;
-    }
+
     .login-footer {
         width: 100%;
+        margin-bottom: 80px;
     }
     
     .container img{
         display: flex;
         justify-content: center;
         align-items: center;
-    
+        margin-top: 50px;
     }
 
     .footer-content {
