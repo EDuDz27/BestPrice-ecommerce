@@ -14,6 +14,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    margin-top: 10px;
    
 }
 
@@ -27,6 +28,7 @@
 .sobre-content{
     padding: 20px;
     border-radius: 10px;
+    
 }
 
 .sobre-content p {
@@ -200,6 +202,7 @@
         flex-direction: column;
         width: 100;
         padding: 5px;
+        margin-top: 50px;
     }
 
     .sobre-img img {
