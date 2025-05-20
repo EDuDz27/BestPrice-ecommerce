@@ -84,7 +84,7 @@ body{
     align-items: center;
     justify-content: center;    
     width: 100vw;
-    height: 90vh;
+    height: 100vh;
 
 }
 
@@ -122,14 +122,13 @@ body{
     box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     border-radius: 12px;
-    position: relative; 
     background-color: white;
     display: flex;
     flex-direction: column;
 }
 
 .botao-sair {
-    position: absolute;
+    float: right;
     right: 20px;
     background-color: #6f8842;
     color: white;
@@ -165,8 +164,12 @@ body{
 
 @media screen and (max-width: 768px) {
     .editperfil{
-    width: 385px;
-    padding: 20px;
+    width: 375px;
+    padding: 40px;
+    margin-top: 50px;
+    margin-bottom: 0px;
+    height: auto;
+    border-radius: 0;
 }
 
     .editar, .editsenha {
@@ -176,7 +179,6 @@ body{
         gap: 20px 70px;
     }
     .botao-sair{
-        position: relative;
         width: auto;
         right:0;
        
