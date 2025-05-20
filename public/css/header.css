@@ -12,6 +12,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 50px;
+    position: fixed;
+    width: 100%;
+    box-shadow: 2px 1px 5px rgb(86, 86, 86);
 }
 
 .header {
